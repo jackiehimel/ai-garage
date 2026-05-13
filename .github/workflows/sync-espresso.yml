@@ -1,0 +1,59 @@
+# clones the digest source repo, runs scripts/sync-espresso.mjs, commits editions/ if changed.
+# schedule: monday 14:00 utc (roughly after 8am et); edit cron as needed.
+# private source: set repo variable NEWS_AGENT_REPOSITORY and secret NEWS_AGENT_CLONE_TOKEN (pat with repo read).
+
+name: Sync AI Espresso editions
+
+on:
+  schedule:
+    - cron: "0 14 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: sync-espresso-editions
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Clone news_agent
+        env:
+          NEWS_AGENT_REPOSITORY: ${{ vars.NEWS_AGENT_REPOSITORY }}
+          NEWS_AGENT_CLONE_TOKEN: ${{ secrets.NEWS_AGENT_CLONE_TOKEN }}
+        run: |
+          set -euo pipefail
+          REPO="${NEWS_AGENT_REPOSITORY:-jackiehimel/news_agent}"
+          DEST="${GITHUB_WORKSPACE}/news_agent"
+          if [ -n "${NEWS_AGENT_CLONE_TOKEN:-}" ]; then
+            git clone --depth 1 "https://x-access-token:${NEWS_AGENT_CLONE_TOKEN}@github.com/${REPO}.git" "$DEST"
+          else
+            git clone --depth 1 "https://github.com/${REPO}.git" "$DEST"
+          fi
+
+      - name: Run sync
+        run: node scripts/sync-espresso.mjs --source "${GITHUB_WORKSPACE}/news_agent"
+
+      - name: Commit and push if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add editions
+          if git diff --staged --quiet; then
+            echo "No changes under editions/; nothing to commit."
+            exit 0
+          fi
+          git commit -m "chore: sync ai espresso editions from news_agent"
+          git push
