@@ -1053,67 +1053,78 @@
                     <stop offset="0%" stop-color="#ecfdf5"/>
                     <stop offset="100%" stop-color="#d1fae5"/>
                   </linearGradient>
+                  <!-- wood grain for shelves -->
+                  <linearGradient id="shelfWood" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#a16207"/>
+                    <stop offset="40%" stop-color="#92400e"/>
+                    <stop offset="100%" stop-color="#78350f"/>
+                  </linearGradient>
+                  <!-- subtle highlight on each book spine top -->
+                  <linearGradient id="bookShine" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                  </linearGradient>
                 </defs>
-                <!-- background -->
+
+                <!-- ── background ── -->
                 <rect width="400" height="140" fill="url(#libBg)"/>
 
-                <!-- ── SHELF 1 (y baseline = 62) ── -->
-                <!-- shelf board -->
-                <rect x="10" y="62" width="380" height="7" rx="1" fill="#6b7280"/>
-                <!-- books sitting on shelf 1 (bottom edge at y=62) -->
-                <!-- "Test Case" -->
-                <rect x="18"  y="28" width="26" height="34" rx="2" fill="#059669"/>
-                <text transform="translate(31,45) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Test Case</text>
-                <!-- "Sales" -->
-                <rect x="46"  y="32" width="20" height="30" rx="2" fill="#0d9488"/>
-                <text transform="translate(56,47) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Sales</text>
-                <!-- "Marketing" -->
-                <rect x="68"  y="26" width="28" height="36" rx="2" fill="#0891b2"/>
-                <text transform="translate(82,45) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Marketing</text>
-                <!-- "Delivery" -->
-                <rect x="98"  y="30" width="22" height="32" rx="2" fill="#7c3aed"/>
-                <text transform="translate(109,46) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Delivery</text>
-                <!-- "Finance" -->
-                <rect x="122" y="34" width="18" height="28" rx="2" fill="#b45309"/>
-                <text transform="translate(131,48) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Finance</text>
-                <!-- "Ops" -->
-                <rect x="142" y="36" width="16" height="26" rx="2" fill="#be123c"/>
-                <text transform="translate(150,49) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Ops</text>
-                <!-- "Support" -->
-                <rect x="160" y="29" width="24" height="33" rx="2" fill="#0369a1"/>
-                <text transform="translate(172,46) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Support</text>
-                <!-- "HR" -->
-                <rect x="186" y="37" width="16" height="25" rx="2" fill="#15803d"/>
-                <text transform="translate(194,49) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">HR</text>
+                <!-- ── left side panel (bookcase wall) ── -->
+                <rect x="8" y="8" width="10" height="128" rx="2" fill="#92400e"/>
+                <!-- ── right side panel ── -->
+                <rect x="382" y="8" width="10" height="128" rx="2" fill="#92400e"/>
+                <!-- ── back wall ── -->
+                <rect x="18" y="8" width="364" height="128" fill="#fef9c3"/>
 
-                <!-- ── SHELF 2 (y baseline = 130) ── -->
-                <!-- shelf board -->
-                <rect x="10" y="130" width="380" height="7" rx="1" fill="#6b7280"/>
-                <!-- books sitting on shelf 2 (bottom edge at y=130) -->
-                <!-- "Legal" -->
-                <rect x="18"  y="97"  width="22" height="33" rx="2" fill="#4f46e5"/>
-                <text transform="translate(29,114) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Legal</text>
-                <!-- "Product" -->
-                <rect x="42"  y="93"  width="26" height="37" rx="2" fill="#0f766e"/>
-                <text transform="translate(55,112) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Product</text>
-                <!-- "DevOps" -->
-                <rect x="70"  y="99"  width="20" height="31" rx="2" fill="#b45309"/>
-                <text transform="translate(80,115) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">DevOps</text>
-                <!-- "Research" -->
-                <rect x="92"  y="94"  width="28" height="36" rx="2" fill="#7e22ce"/>
-                <text transform="translate(106,113) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Research</text>
-                <!-- "CX" -->
-                <rect x="122" y="100" width="16" height="30" rx="2" fill="#be123c"/>
-                <text transform="translate(130,115) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">CX</text>
-                <!-- "Analytics" -->
-                <rect x="140" y="95"  width="28" height="35" rx="2" fill="#065f46"/>
-                <text transform="translate(154,113) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Analytics</text>
-                <!-- "Enablement" -->
-                <rect x="170" y="91"  width="32" height="39" rx="2" fill="#1d4ed8"/>
-                <text transform="translate(186,112) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Enablement</text>
-                <!-- "Comms" -->
-                <rect x="204" y="98"  width="22" height="32" rx="2" fill="#9d174d"/>
-                <text transform="translate(215,114) rotate(-90)" text-anchor="middle" font-size="5.5" font-family="sans-serif" fill="#fff" font-weight="600">Comms</text>
+                <!-- ── SHELF BOARD (sits at y=108, books rest on top) ── -->
+                <rect x="8" y="108" width="384" height="10" rx="1" fill="url(#shelfWood)"/>
+                <!-- shelf shadow line -->
+                <rect x="8" y="117" width="384" height="2" rx="0" fill="#78350f" opacity="0.4"/>
+
+                <!-- ── BOOKS (bottom edge = 108, left edge starts at 26) ── -->
+                <!-- Book spacing: 6 books, ~55px each across 364px interior, gap=4px -->
+
+                <!-- 1. Quality Engineering — tall, teal -->
+                <rect x="26"  y="22" width="46" height="86" rx="2" fill="#0f766e"/>
+                <rect x="26"  y="22" width="46" height="86" rx="2" fill="url(#bookShine)"/>
+                <!-- spine line detail -->
+                <line x1="30" y1="22" x2="30" y2="108" stroke="#0d9488" stroke-width="1" opacity="0.5"/>
+                <text transform="translate(49,68) rotate(-90)" text-anchor="middle" font-size="7" font-family="sans-serif" fill="#ffffff" font-weight="700" letter-spacing="0.3">Quality Engineering</text>
+
+                <!-- 2. Development — medium, indigo -->
+                <rect x="78"  y="30" width="44" height="78" rx="2" fill="#4338ca"/>
+                <rect x="78"  y="30" width="44" height="78" rx="2" fill="url(#bookShine)"/>
+                <line x1="82" y1="30" x2="82" y2="108" stroke="#6366f1" stroke-width="1" opacity="0.5"/>
+                <text transform="translate(100,72) rotate(-90)" text-anchor="middle" font-size="7" font-family="sans-serif" fill="#ffffff" font-weight="700" letter-spacing="0.3">Development</text>
+
+                <!-- 3. ADLC — shorter, amber -->
+                <rect x="128" y="42" width="40" height="66" rx="2" fill="#b45309"/>
+                <rect x="128" y="42" width="40" height="66" rx="2" fill="url(#bookShine)"/>
+                <line x1="132" y1="42" x2="132" y2="108" stroke="#d97706" stroke-width="1" opacity="0.5"/>
+                <text transform="translate(148,78) rotate(-90)" text-anchor="middle" font-size="7" font-family="sans-serif" fill="#ffffff" font-weight="700" letter-spacing="0.3">ADLC</text>
+
+                <!-- 4. Marketing — tall, emerald -->
+                <rect x="174" y="18" width="46" height="90" rx="2" fill="#059669"/>
+                <rect x="174" y="18" width="46" height="90" rx="2" fill="url(#bookShine)"/>
+                <line x1="178" y1="18" x2="178" y2="108" stroke="#10b981" stroke-width="1" opacity="0.5"/>
+                <text transform="translate(197,66) rotate(-90)" text-anchor="middle" font-size="7" font-family="sans-serif" fill="#ffffff" font-weight="700" letter-spacing="0.3">Marketing</text>
+
+                <!-- 5. Retail — medium, rose -->
+                <rect x="226" y="34" width="42" height="74" rx="2" fill="#be123c"/>
+                <rect x="226" y="34" width="42" height="74" rx="2" fill="url(#bookShine)"/>
+                <line x1="230" y1="34" x2="230" y2="108" stroke="#f43f5e" stroke-width="1" opacity="0.5"/>
+                <text transform="translate(247,74) rotate(-90)" text-anchor="middle" font-size="7" font-family="sans-serif" fill="#ffffff" font-weight="700" letter-spacing="0.3">Retail</text>
+
+                <!-- 6. Vertical — tall, blue -->
+                <rect x="274" y="24" width="44" height="84" rx="2" fill="#1d4ed8"/>
+                <rect x="274" y="24" width="44" height="84" rx="2" fill="url(#bookShine)"/>
+                <line x1="278" y1="24" x2="278" y2="108" stroke="#3b82f6" stroke-width="1" opacity="0.5"/>
+                <text transform="translate(296,69) rotate(-90)" text-anchor="middle" font-size="7" font-family="sans-serif" fill="#ffffff" font-weight="700" letter-spacing="0.3">Vertical</text>
+
+                <!-- ── top cap of bookcase ── -->
+                <rect x="8" y="6" width="384" height="6" rx="2" fill="url(#shelfWood)"/>
+                <!-- ── bottom base ── -->
+                <rect x="8" y="128" width="384" height="6" rx="2" fill="url(#shelfWood)"/>
               </svg>
             </div>
             <div class="hero-card-body">
