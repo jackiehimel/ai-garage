@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/", "destination": "/ai_garage_portal_merged.html" }]
+}
