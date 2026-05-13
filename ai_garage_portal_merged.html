@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<!--
+# ai garage portal (merged): solvd internal single-file static site.
+# hash router switches main sections; inline css + one script block at bottom.
+# gantt "today" line: eight cols may–dec; js sets --gantt-now-fr on .gantt;
+#   left calc skips label column so marker lines up with month header + bars.
+# espresso: fetch editions/manifest.json when http(s); file:// keeps static copy.
+# iframe load: resize height from content when same-origin; else css fallback.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Garage — Solvd</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #171717;
+    --ink-soft: #404040;
+    --ink-faint: #737373;
+    --paper: #fafafa;
+    --paper-warm: #f5f5f5;
+    --rule: #d4d4d4;
+    --rule-soft: #e5e5e5;
+    --accent: #059669;
+    --accent-soft: #d1fae5;
+    --max-width: 1200px;
+    --content-width: 720px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  aside {
+    border-right: 1px solid var(--rule);
+    padding: 48px 32px 48px 32px;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .brand {
+    margin-bottom: 56px;
+  }
+
+  .brand-mark {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .brand-mark em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .brand-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+  }
+
+  nav h4 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin-bottom: 12px;
+    margin-top: 28px;
+  }
+
+  nav h4:first-child { margin-top: 0; }
+
+  nav ul { list-style: none; }
+
+  nav li { margin-bottom: 2px; }
+
+  nav a {
+    display: block;
+    padding: 6px 10px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 3px;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    margin-left: -10px;
+  }
+
+  nav a:hover {
+    color: var(--ink);
+    background: var(--paper-warm);
+  }
+
+  nav a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: 500;
+    background: var(--accent-soft);
+  }
+
+  /* Main content */
+  main {
+    padding: 64px 80px 96px 80px;
+    max-width: 100%;
+  }
+
+  .content {
+    max-width: var(--content-width);
+  }
+
+  /* Page header */
+  .page-header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .breadcrumb {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 44px;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .lede {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 600px;
+  }
+
+  /* Body content */
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.015em;
+    margin-top: 56px;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  h2:first-child { margin-top: 0; }
+
+  h3 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  p {
+    margin-bottom: 16px;
+    color: var(--ink-soft);
+    max-width: 65ch;
+  }
+
+  p strong, li strong { color: var(--ink); font-weight: 600; }
+
+  ul, ol {
+    margin-bottom: 20px;
+    padding-left: 24px;
+    color: var(--ink-soft);
+  }
+
+  ul li, ol li {
+    margin-bottom: 8px;
+    max-width: 60ch;
+  }
+
+  ul li::marker { color: var(--ink-faint); }
+
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-soft);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s;
+  }
+
+  a:hover { text-decoration-color: var(--accent); }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0 32px 0;
+    font-size: 14px;
+  }
+
+  table th {
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    color: var(--ink-faint);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+
+  table td:first-child { color: var(--ink); font-weight: 500; }
+
+  table tr:last-child td { border-bottom: none; }
+
+  /* Cards / blocks */
+  .callout {
+    background: var(--paper-warm);
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    margin: 28px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .callout p { margin-bottom: 0; color: var(--ink); }
+
+  .placeholder {
+    border: 1px dashed var(--rule);
+    border-radius: 4px;
+    padding: 32px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    margin: 24px 0;
+    background: var(--paper);
+  }
+
+  .placeholder strong {
+    display: block;
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 6px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* Quick links grid on home */
+  .links-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    margin: 32px 0 48px 0;
+    overflow: hidden;
+  }
+
+  .links-grid a {
+    background: var(--paper);
+    padding: 24px 20px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: background 0.15s;
+    display: block;
+  }
+
+  .links-grid a:hover { background: var(--paper-warm); }
+
+  .links-grid .link-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .links-grid .link-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+
+  .links-grid .link-desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* Squad rows */
+  .squad-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .squad-row:last-child { border-bottom: none; }
+
+  .squad-name {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .squad-role {
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+
+  /* Status pills */
+  .pill {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .pill-active { background: var(--accent-soft); color: var(--accent); }
+  .pill-soon { background: #e8e4d9; color: var(--ink-soft); }
+
+  /* Page sections — only one visible at a time */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.2s ease-out; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Footer */
+  .meta {
+    margin-top: 96px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+
+  /* Form-ish placeholders */
+  .form-mock {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 24px;
+    margin: 24px 0;
+  }
+
+  .form-mock-row {
+    margin-bottom: 16px;
+  }
+
+  .form-mock-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .form-mock-input {
+    height: 36px;
+    background: var(--paper-warm);
+    border-radius: 3px;
+  }
+
+  .form-mock-input.tall { height: 80px; }
+
+  /* Hero cards — two-up entry points on Home */
+  .hero-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 8px 0 48px 0;
+  }
+
+  .hero-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    width: 100%;
+    padding: 0;
+    display: block;
+  }
+
+  .hero-card:hover {
+    border-color: var(--ink-faint);
+    box-shadow: 0 6px 24px rgba(23, 23, 23, 0.06);
+    transform: translateY(-1px);
+  }
+
+  .hero-card[aria-expanded="true"] {
+    border-color: var(--accent);
+    box-shadow: 0 6px 24px rgba(5, 150, 105, 0.12);
+  }
+
+  .hero-card-visual {
+    height: 140px;
+    position: relative;
+    overflow: hidden;
+    background: var(--paper-warm);
+  }
+
+  .hero-card-visual svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-card-body {
+    padding: 20px 24px 22px;
+  }
+
+  .hero-card-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hero-card-toggle {
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .hero-card-toggle::after {
+    content: "↓";
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+
+  .hero-card[aria-expanded="true"] .hero-card-toggle::after {
+    transform: rotate(180deg);
+  }
+
+  .hero-card-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.15;
+  }
+
+  .hero-card-desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: none;
+  }
+
+  /* Accordion panels (in-page expand/collapse) */
+  .reveal-panel {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease, margin 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    margin: 0 0 0 0;
+    padding: 0;
+  }
+
+  .reveal-panel.open {
+    max-height: 4000px;
+    opacity: 1;
+    margin: 0 0 40px 0;
+    padding: 28px 28px 24px 28px;
+    background: var(--paper);
+    border: 1px solid var(--rule-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+  }
+
+  .reveal-panel h3:first-child,
+  .reveal-panel > p:first-child { margin-top: 0; }
+
+  .reveal-panel .panel-lede {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink);
+    max-width: 60ch;
+    margin-bottom: 24px;
+  }
+
+  /* Image-card grid for Library categories */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 8px 0 16px 0;
+  }
+
+  .category-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    width: 100%;
+    padding: 0;
+    display: block;
+  }
+
+  .category-card:hover {
+    border-color: var(--ink-faint);
+    box-shadow: 0 4px 16px rgba(23, 23, 23, 0.05);
+    transform: translateY(-1px);
+  }
+
+  .category-card[aria-expanded="true"] {
+    border-color: var(--accent);
+  }
+
+  .category-card-visual {
+    height: 96px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .category-card-visual svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .category-card-body {
+    padding: 14px 16px 16px;
+  }
+
+  .category-card-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+
+  .category-card-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .category-card-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: none;
+  }
+
+  .category-detail {
+    margin-top: 8px;
+    padding: 20px 22px;
+    background: var(--paper-warm);
+    border-radius: 4px;
+    border: 1px solid var(--rule-soft);
+    display: none;
+  }
+
+  .category-detail.open { display: block; animation: fadeIn 0.25s ease-out; }
+
+  .category-detail h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 10px;
+    margin-top: 18px;
+  }
+
+  .category-detail h4:first-child { margin-top: 0; }
+
+  .category-detail p,
+  .category-detail li { font-size: 14px; }
+
+  /* gantt */
+  .gantt {
+    --gantt-label-w: 140px;
+    /* today: 0–100 of track only; js sets --gantt-now-fr */
+    --gantt-now-fr: 0;
+    margin: 24px 0 8px 0;
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    background: var(--paper);
+    padding: 20px 24px 28px 24px;
+    position: relative;
+  }
+
+  .gantt-header {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .gantt-header .spacer { }
+
+  .gantt-months {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+  }
+
+  .gantt-months span {
+    padding: 6px 0;
+    border-left: 1px solid var(--rule-soft);
+    text-align: center;
+  }
+
+  .gantt-months span:first-child { border-left: none; }
+
+  .gantt-track {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    align-items: center;
+    margin: 6px 0;
+    min-height: 32px;
+  }
+
+  .gantt-track-label {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+    padding-right: 14px;
+  }
+
+  .gantt-track-area {
+    position: relative;
+    height: 26px;
+    background: linear-gradient(to right,
+      transparent 0%, transparent 12.49%,
+      var(--rule-soft) 12.5%, var(--rule-soft) 12.6%,
+      transparent 12.6%, transparent 25%,
+      var(--rule-soft) 25%, var(--rule-soft) 25.1%,
+      transparent 25.1%, transparent 37.5%,
+      var(--rule-soft) 37.5%, var(--rule-soft) 37.6%,
+      transparent 37.6%, transparent 50%,
+      var(--rule-soft) 50%, var(--rule-soft) 50.1%,
+      transparent 50.1%, transparent 62.5%,
+      var(--rule-soft) 62.5%, var(--rule-soft) 62.6%,
+      transparent 62.6%, transparent 75%,
+      var(--rule-soft) 75%, var(--rule-soft) 75.1%,
+      transparent 75.1%, transparent 87.5%,
+      var(--rule-soft) 87.5%, var(--rule-soft) 87.6%,
+      transparent 87.6%);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .gantt-bar {
+    position: absolute;
+    top: 4px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 3px;
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 11px;
+    color: white;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .gantt-bar.soft { background: var(--accent-soft); color: var(--ink); opacity: 1; border: 1px solid var(--accent); }
+  .gantt-bar.muted { background: var(--rule); color: var(--ink-soft); }
+
+  .gantt-now {
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    width: 2px;
+    background: var(--ink);
+    z-index: 3;
+    pointer-events: none;
+    /* left: offset by label col; same % base as bars */
+    left: calc(var(--gantt-label-w) + (100% - var(--gantt-label-w)) * var(--gantt-now-fr) / 100);
+  }
+
+  .gantt-now-label {
+    position: absolute;
+    top: -28px;
+    left: calc(var(--gantt-label-w) + (100% - var(--gantt-label-w)) * var(--gantt-now-fr) / 100);
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .gantt-now-label::before {
+    content: "★";
+    margin-right: 5px;
+    color: #fbbf24;
+  }
+
+  .gantt-now-label::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 6px;
+    height: 6px;
+    background: var(--ink);
+  }
+
+  .gantt-grid-wrapper {
+    position: relative;
+    margin-top: 4px;
+  }
+
+  /* Accomplishments tiles */
+  .accomp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 20px 0 16px 0;
+  }
+
+  .accomp-tile {
+    background: var(--paper-warm);
+    border: 1px solid var(--rule-soft);
+    border-radius: 4px;
+    padding: 16px 18px;
+  }
+
+  .accomp-tile-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .accomp-tile-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+
+  .accomp-tile-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
+  .weekly-footer {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 24px;
+    padding: 14px 18px;
+    background: var(--accent-soft);
+    border-radius: 4px;
+    font-size: 14px;
+    border-left: 3px solid var(--accent);
+  }
+
+  /* AI Espresso embed — frames the live daily digest */
+  .espresso-meta {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 18px;
+    align-items: center;
+    padding: 14px 18px;
+    margin: 8px 0 18px 0;
+    background: var(--paper-warm);
+    border: 1px solid var(--rule-soft);
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+
+  .espresso-meta-label {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .espresso-meta-headline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 15px;
+    letter-spacing: 0;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .espresso-meta-issue {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 10px;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .espresso-frame {
+    position: relative;
+    margin: 0 auto 16px auto;
+    max-width: 640px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: #F5E9D3;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(23, 23, 23, 0.06);
+  }
+
+  .espresso-frame iframe {
+    display: block;
+    width: 100%;
+    height: 1750px;
+    border: 0;
+    background: #F5E9D3;
+  }
+
+  .espresso-actions {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin: 6px 0 28px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .espresso-actions a {
+    text-decoration: none;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-soft);
+    padding-bottom: 2px;
+  }
+
+  .espresso-actions a:hover { border-bottom-color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .espresso-meta {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .espresso-frame iframe { height: 2400px; }
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside {
+      position: static;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+      padding: 32px 24px;
+    }
+    main { padding: 40px 24px 64px 24px; }
+    h1 { font-size: 32px; }
+    .lede { font-size: 17px; }
+    .links-grid { grid-template-columns: 1fr; }
+    .squad-row { grid-template-columns: 1fr; gap: 4px; }
+    .hero-cards { grid-template-columns: 1fr; }
+    .category-grid { grid-template-columns: 1fr; }
+    .accomp-grid { grid-template-columns: repeat(2, 1fr); }
+    .gantt { --gantt-label-w: 100px; }
+    .gantt-header,
+    .gantt-track { grid-template-columns: 100px 1fr; }
+    .gantt-track-label { font-size: 12px; padding-right: 8px; }
+    .gantt-bar { font-size: 10px; padding: 0 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <aside>
+    <div class="brand">
+      <span class="brand-mark">AI <em>Garage</em></span>
+      <span class="brand-sub">Solvd · Internal</span>
+    </div>
+
+    <nav>
+      <h4>Overview</h4>
+      <ul>
+        <li><a href="#home" data-page="home">Home</a></li>
+      </ul>
+
+      <h4>The Three Links</h4>
+      <ul>
+        <li><a href="#epics" data-page="epics">Epics &amp; Stories</a></li>
+        <li><a href="#plan" data-page="plan">Execution Plan</a></li>
+        <li><a href="#library" data-page="library">Agentic Library</a></li>
+      </ul>
+
+      <h4>Programs</h4>
+      <ul>
+        <li><a href="#espresso" data-page="espresso">AI Espresso</a></li>
+        <li><a href="#roundtable" data-page="roundtable">AI Roundtable</a></li>
+      </ul>
+
+      <h4>Get Involved</h4>
+      <ul>
+        <li><a href="#submit" data-page="submit">Submit an Idea</a></li>
+        <li><a href="#squad" data-page="squad">Contact</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+
+    <!-- HOME -->
+    <section class="page" id="page-home">
+      <div class="content">
+        <div class="page-header">
+          <div class="breadcrumb">Internal Portal</div>
+          <h1>AI Garage</h1>
+          <p class="lede">Solvd workspace for building agents — for everyone.</p>
+        </div>
+
+        <!-- Two hero entry points: Library + Workshop -->
+        <div class="hero-cards">
+          <button class="hero-card" type="button" aria-expanded="false" aria-controls="reveal-library" data-toggle="reveal-library">
+            <div class="hero-card-visual">
+              <svg viewBox="0 0 400 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="libGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#d1fae5"/>
+                    <stop offset="100%" stop-color="#a7f3d0"/>
+                  </linearGradient>
+                </defs>
+                <rect width="400" height="140" fill="url(#libGrad)"/>
+                <g fill="#059669" opacity="0.85">
+                  <rect x="40"  y="48" width="22" height="74" rx="2"/>
+                  <rect x="68"  y="36" width="22" height="86" rx="2"/>
+                  <rect x="96"  y="58" width="22" height="64" rx="2"/>
+                  <rect x="124" y="44" width="22" height="78" rx="2"/>
+                  <rect x="152" y="62" width="22" height="60" rx="2"/>
+                  <rect x="180" y="50" width="22" height="72" rx="2"/>
+                  <rect x="208" y="40" width="22" height="82" rx="2"/>
+                  <rect x="236" y="56" width="22" height="66" rx="2"/>
+                  <rect x="264" y="46" width="22" height="76" rx="2"/>
+                  <rect x="292" y="60" width="22" height="62" rx="2"/>
+                  <rect x="320" y="42" width="22" height="80" rx="2"/>
+                </g>
+                <line x1="20" y1="124" x2="380" y2="124" stroke="#047857" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="hero-card-body">
+              <div class="hero-card-label">
+                <span>01 — Track</span>
+                <span class="hero-card-toggle">Open</span>
+              </div>
+              <div class="hero-card-title">Agentic Library</div>
+              <p class="hero-card-desc">A categorized catalog of working agents the GTM team uses in customer conversations. The answer to "what can you do with AI in delivery?" is a demo, not a slide.</p>
+            </div>
+          </button>
+
+          <button class="hero-card" type="button" aria-expanded="false" aria-controls="reveal-workshop" data-toggle="reveal-workshop">
+            <div class="hero-card-visual">
+              <svg viewBox="0 0 400 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="wsGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#fef3c7"/>
+                    <stop offset="100%" stop-color="#fde68a"/>
+                  </linearGradient>
+                </defs>
+                <rect width="400" height="140" fill="url(#wsGrad)"/>
+                <g stroke="#92400e" stroke-width="2" fill="none" opacity="0.9">
+                  <circle cx="120" cy="70" r="36"/>
+                  <circle cx="120" cy="70" r="22"/>
+                  <line x1="120" y1="30" x2="120" y2="44"/>
+                  <line x1="120" y1="96" x2="120" y2="110"/>
+                  <line x1="80"  y1="70" x2="94"  y2="70"/>
+                  <line x1="146" y1="70" x2="160" y2="70"/>
+                  <line x1="92"  y1="42" x2="102" y2="52"/>
+                  <line x1="138" y1="88" x2="148" y2="98"/>
+                  <line x1="92"  y1="98" x2="102" y2="88"/>
+                  <line x1="138" y1="52" x2="148" y2="42"/>
+                </g>
+                <g fill="#92400e" opacity="0.85">
+                  <rect x="220" y="46" width="120" height="6" rx="3"/>
+                  <rect x="220" y="64" width="90"  height="6" rx="3"/>
+                  <rect x="220" y="82" width="140" height="6" rx="3"/>
+                </g>
+                <g fill="#fbbf24" stroke="#92400e" stroke-width="1.5">
+                  <polygon points="270,16 274,28 286,28 276,35 280,46 270,40 260,46 264,35 254,28 266,28"/>
+                </g>
+              </svg>
+            </div>
+            <div class="hero-card-body">
+              <div class="hero-card-label">
+                <span>02 — Track</span>
+                <span class="hero-card-toggle">Open</span>
+              </div>
+              <div class="hero-card-title">Agentic Workshop</div>
+              <p class="hero-card-desc">A structured intake where anyone at Solvd can bring an idea, get it qualified, and ship a working agent with engineering support and senior coaching.</p>
+            </div>
+          </button>
+        </div>
+
+        <!-- Library expansion -->
+        <div class="reveal-panel" id="reveal-library" role="region" aria-label="Agentic Library detail">
+          <p class="panel-lede">A growing collection of agents organized by function. Each category groups working demos by who they're for and what they automate.</p>
+
+          <div class="category-grid">
+            <button class="category-card" type="button" aria-expanded="false" aria-controls="cat-detail-qe" data-cat-toggle="cat-detail-qe">
+              <div class="category-card-visual">
+                <svg viewBox="0 0 400 96" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect width="400" height="96" fill="#ecfdf5"/>
+                  <g stroke="#059669" stroke-width="1.5" fill="none" opacity="0.85">
+                    <path d="M40 70 L40 48 L72 48 L72 30 L104 30 L104 56 L136 56 L136 44 L168 44"/>
+                    <circle cx="40"  cy="70" r="4" fill="#059669"/>
+                    <circle cx="72"  cy="48" r="4" fill="#059669"/>
+                    <circle cx="104" cy="30" r="4" fill="#059669"/>
+                    <circle cx="136" cy="56" r="4" fill="#059669"/>
+                    <circle cx="168" cy="44" r="4" fill="#059669"/>
+                  </g>
+                  <g fill="#059669" opacity="0.8" font-family="monospace" font-size="11">
+                    <text x="220" y="40">✓ test gen</text>
+                    <text x="220" y="60">✓ self-heal</text>
+                    <text x="220" y="80">✓ execute</text>
+                  </g>
+                </svg>
+              </div>
+              <div class="category-card-body">
+                <div class="category-card-label">Category · QE</div>
+                <div class="category-card-title">Quality Engineering</div>
+                <p class="category-card-desc">Multi-agent QE workflow on Zebrunner — case gen, normalization, execution, self-healing.</p>
+              </div>
+            </button>
+
+            <button class="category-card" type="button" aria-expanded="false" aria-controls="cat-detail-adlc" data-cat-toggle="cat-detail-adlc">
+              <div class="category-card-visual">
+                <svg viewBox="0 0 400 96" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect width="400" height="96" fill="#eff6ff"/>
+                  <g stroke="#1d4ed8" stroke-width="1.5" fill="none" opacity="0.85">
+                    <circle cx="200" cy="48" r="34"/>
+                    <path d="M200 14 A34 34 0 0 1 234 48" stroke-width="3" stroke="#059669"/>
+                  </g>
+                  <g font-family="monospace" font-size="9" fill="#1e3a8a" opacity="0.9">
+                    <text x="190" y="6" >PLAN</text>
+                    <text x="240" y="38">BUILD</text>
+                    <text x="226" y="80">QUALITY</text>
+                    <text x="156" y="80">RELEASE</text>
+                    <text x="148" y="38">LEARN</text>
+                  </g>
+                </svg>
+              </div>
+              <div class="category-card-body">
+                <div class="category-card-label">Category · ADLC</div>
+                <div class="category-card-title">Development / ADLC</div>
+                <p class="category-card-desc">Closed-loop agents across Plan → Build → Quality → Release → Learn.</p>
+              </div>
+            </button>
+
+            <button class="category-card" type="button" aria-expanded="false" aria-controls="cat-detail-marketing" data-cat-toggle="cat-detail-marketing">
+              <div class="category-card-visual">
+                <svg viewBox="0 0 400 96" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect width="400" height="96" fill="#fdf2f8"/>
+                  <g fill="#be185d" opacity="0.85">
+                    <polygon points="40,60 80,40 130,52 175,30 220,46 270,28 315,42 360,24 360,76 40,76"/>
+                  </g>
+                  <g stroke="#be185d" stroke-width="1.5" fill="none" opacity="0.6">
+                    <path d="M40 60 L80 40 L130 52 L175 30 L220 46 L270 28 L315 42 L360 24"/>
+                  </g>
+                  <g fill="#be185d" font-family="monospace" font-size="10">
+                    <circle cx="80"  cy="40" r="2.5"/>
+                    <circle cx="175" cy="30" r="2.5"/>
+                    <circle cx="270" cy="28" r="2.5"/>
+                    <circle cx="360" cy="24" r="2.5"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="category-card-body">
+                <div class="category-card-label">Category · Marketing</div>
+                <div class="category-card-title">Marketing</div>
+                <p class="category-card-desc">SEO scouting, email content + subject, accessibility checks, campaign tooling.</p>
+              </div>
+            </button>
+
+            <button class="category-card" type="button" aria-expanded="false" aria-controls="cat-detail-retail" data-cat-toggle="cat-detail-retail">
+              <div class="category-card-visual">
+                <svg viewBox="0 0 400 96" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect width="400" height="96" fill="#fff7ed"/>
+                  <g stroke="#c2410c" stroke-width="1.5" fill="#fed7aa" opacity="0.9">
+                    <rect x="60"  y="36" width="60" height="48" rx="2"/>
+                    <rect x="130" y="48" width="60" height="36" rx="2"/>
+                    <rect x="200" y="30" width="60" height="54" rx="2"/>
+                    <rect x="270" y="42" width="60" height="42" rx="2"/>
+                  </g>
+                  <g stroke="#c2410c" stroke-width="1.5" fill="none">
+                    <path d="M70 30 L70 36 M80 30 L80 36 M90 30 L90 36 M100 30 L100 36 M110 30 L110 36"/>
+                    <path d="M140 42 L140 48 M150 42 L150 48 M160 42 L160 48 M170 42 L170 48 M180 42 L180 48"/>
+                  </g>
+                  <g fill="#c2410c" opacity="0.9">
+                    <circle cx="90"  cy="60" r="4"/>
+                    <circle cx="160" cy="66" r="4"/>
+                    <circle cx="230" cy="56" r="4"/>
+                    <circle cx="300" cy="62" r="4"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="category-card-body">
+                <div class="category-card-label">Category · Retail</div>
+                <div class="category-card-title">Retail &amp; Vertical</div>
+                <p class="category-card-desc">Personalization, recommendation, content contract checks for headless commerce.</p>
+              </div>
+            </button>
+          </div>
+
+          <!-- Per-category detail (revealed in-place) -->
+          <div class="category-detail" id="cat-detail-qe">
+            <h4>What's shipping</h4>
+            <p>Five QE agents are in production on Zebrunner: test case generation, normalization, code generation, execution, and self-healing. Failure analysis with notification and report generation are in build.</p>
+            <h4>Why it matters</h4>
+            <p>The customer answer to "show me QE with AI" is a working multi-agent flow on real builds, not a slide. Built on LangGraph so the underlying model can be swapped without re-architecting.</p>
+            <p><a href="#library" data-page="library">Open full QE entries →</a></p>
+          </div>
+
+          <div class="category-detail" id="cat-detail-adlc">
+            <h4>What's shipping</h4>
+            <p>Story creation and refinement, code context and integration contracts, test handoff into the QE workflow at a defined API entry point, release gating, and a Learn loop that feeds production signal back into planning.</p>
+            <h4>Why it matters</h4>
+            <p>Treats the development lifecycle as a closed loop of agents — Plan, Build, Quality, Release, Learn — rather than a chain of point tools.</p>
+            <p><a href="#epics" data-page="epics">Open ADLC stories →</a></p>
+          </div>
+
+          <div class="category-detail" id="cat-detail-marketing">
+            <h4>What's shipping</h4>
+            <p>SEO scouting and gap-fix, email subject and content generation, accessibility checks, campaign tooling. First marketing agents enter the Library as Sprint 1 closes.</p>
+            <h4>Why it matters</h4>
+            <p>Marketing was the first GTM ask. These are the agents we point to when an account team needs to demonstrate "AI in marketing delivery" in week one.</p>
+          </div>
+
+          <div class="category-detail" id="cat-detail-retail">
+            <h4>What's shipping</h4>
+            <p>Industry-tailored agents informed by current account work — personalization, recommendation, content contract checking against headless commerce stacks.</p>
+            <h4>Why it matters</h4>
+            <p>The Library has to go beyond horizontal QE/ADLC/Marketing. Vertical agents make the Garage relevant to retail account conversations specifically.</p>
+          </div>
+        </div>
+
+        <!-- Workshop expansion -->
+        <div class="reveal-panel" id="reveal-workshop" role="region" aria-label="Agentic Workshop detail">
+          <p class="panel-lede">Bring an idea. Get it qualified. Ship a working agent with engineering and senior coaching from the Garage.</p>
+
+          <ol>
+            <li><strong>Submit.</strong> Cover the problem, the business case, your proposed solution, and what the result should look like.</li>
+            <li><strong>Qualify.</strong> A small approval group reviews submissions on a regular cadence.</li>
+            <li><strong>Build.</strong> Approved ideas receive bench engineering time and senior technical coaching from the Garage's reviewers.</li>
+            <li><strong>Ship.</strong> Submitters stay involved through delivery. The output is a working agent, demoed at sprint end.</li>
+          </ol>
+
+          <p>Ideas don't need to be polished to be submitted. The intake exists to qualify, not to filter for finish. <a href="#submit" data-page="submit">Submit an idea →</a></p>
+        </div>
+
+        <!-- Internal-facing execution view -->
+        <h2>See our work in action</h2>
+        <p>An internal view of what's in flight, what's shipped, and where the Garage is on the seven-month plan.</p>
+
+        <h3>Plan, June – December 2026</h3>
+
+        <div class="gantt">
+          <div class="gantt-header">
+            <div class="spacer"></div>
+            <div class="gantt-months">
+              <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+            </div>
+          </div>
+
+          <div class="gantt-grid-wrapper">
+            <div class="gantt-now-label">We are here</div>
+            <div class="gantt-now"></div>
+
+            <div class="gantt-track">
+              <div class="gantt-track-label">QE / Zebrunner</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar" style="left: 12.5%; width: 75%;">7 agents · finalize reporting + failure analysis</div>
+              </div>
+            </div>
+            <div class="gantt-track">
+              <div class="gantt-track-label">ADLC</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar" style="left: 12.5%; width: 87.5%;">Plan → Build → Quality → Release → Learn loop</div>
+              </div>
+            </div>
+            <div class="gantt-track">
+              <div class="gantt-track-label">Marketing</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar soft" style="left: 12.5%; width: 50%;">SEO · email · accessibility · campaign</div>
+              </div>
+            </div>
+            <div class="gantt-track">
+              <div class="gantt-track-label">Retail / Vertical</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar soft" style="left: 37.5%; width: 50%;">Personalization · content contracts</div>
+              </div>
+            </div>
+            <div class="gantt-track">
+              <div class="gantt-track-label">Internal workflows</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar muted" style="left: 25%; width: 62.5%;">AI Espresso → intranet agents</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Accomplished so far</h3>
+        <div class="accomp-grid">
+          <div class="accomp-tile">
+            <div class="accomp-tile-num">5</div>
+            <div class="accomp-tile-label">QE agents</div>
+            <div class="accomp-tile-note">Shipped on Zebrunner — case gen, normalization, code gen, execution, self-healing.</div>
+          </div>
+          <div class="accomp-tile">
+            <div class="accomp-tile-num">3</div>
+            <div class="accomp-tile-label">ADLC agents</div>
+            <div class="accomp-tile-note">In build across story refinement, code context, and release gating.</div>
+          </div>
+          <div class="accomp-tile">
+            <div class="accomp-tile-num">5</div>
+            <div class="accomp-tile-label">Marketing agents</div>
+            <div class="accomp-tile-note">Scoped for the first sprint window — SEO, email subject, accessibility, campaign tooling.</div>
+          </div>
+          <div class="accomp-tile">
+            <div class="accomp-tile-num">4</div>
+            <div class="accomp-tile-label">Retail candidates</div>
+            <div class="accomp-tile-note">Vertical agents identified from current account work, sequencing in progress.</div>
+          </div>
+        </div>
+
+        <p><strong>Upcoming months:</strong> June kicks off the build sprints. July–September focuses Marketing and the QE closure. October onward extends into Retail vertical agents and the internal workflow platform.</p>
+
+        <h3>Epics in flight</h3>
+        <div class="links-grid">
+          <a href="#epics" data-page="epics">
+            <div class="link-num">Epic 01</div>
+            <div class="link-title">QE agent workflow</div>
+            <div class="link-desc">Multi-agent Zebrunner flow — 5 shipped, 2 in build.</div>
+          </a>
+          <a href="#epics" data-page="epics">
+            <div class="link-num">Epic 02</div>
+            <div class="link-title">ADLC agents</div>
+            <div class="link-desc">Closed-loop agents across Plan → Build → Quality → Release → Learn.</div>
+          </a>
+          <a href="#epics" data-page="epics">
+            <div class="link-num">Epic 03</div>
+            <div class="link-title">Internal workflows</div>
+            <div class="link-desc">Timesheet, leave, SOW flows — building toward an internal agentic platform.</div>
+          </a>
+        </div>
+        <p><a href="#epics" data-page="epics">See all epics &amp; stories →</a></p>
+
+        <div class="weekly-footer">This content will be updated at the end of every Friday.</div>
+
+        <h2>Programs</h2>
+
+        <h3><a href="#espresso" data-page="espresso">AI Espresso</a> <span class="pill pill-active">Shipping</span></h3>
+        <p>A short-form AI news digest published to the Agentic Software Engineering org. Designed to be read in under a minute and to keep the org market-aware, not just tool-aware. The digest is itself built as an agent — making it the first internal-facing agent the Garage runs in production. <a href="#espresso" data-page="espresso">Read today's edition →</a></p>
+
+        <h3>AI Roundtable<span class="pill pill-soon">Launches June 1</span></h3>
+        <p>A weekly 30-minute session where one presenter walks through an idea or build using a five-point format: the idea, the business problem it solves, what the solution entails, expected results, and a closing comment. Sessions are recorded. Anyone in the org can submit to present.</p>
+
+        <h3>Internal Agentic Platform</h3>
+        <p>The Garage is also building agents Solvd uses internally — starting with everyday workflow agents and extending toward an AI-powered intranet for the org. AI Espresso is the first agent on this platform.</p>
+
+        <h2>Inspirations</h2>
+        <ul>
+          <li><a href="https://writer.com" target="_blank" rel="noopener">writer.com</a> — agent library structure, categorized cards, hands-on try-it path</li>
+          <li><a href="https://verybigthings.com" target="_blank" rel="noopener">verybigthings.com</a> — naming and brand cadence</li>
+        </ul>
+
+        <div class="meta">Owner: Jackie Himel · Maintained by the AI Garage squad · v0.1</div>
+      </div>
+    </section>
+
+    <!-- EPICS -->
+    <section class="page" id="page-epics">
+      <div class="content">
+        <div class="page-header">
+          <div class="breadcrumb">AI Garage / Library</div>
+          <h1>Epics &amp; Stories</h1>
+          <p class="lede">Problem statements grouped into epics, broken into stories with effort and timing.</p>
+        </div>
+
+        <div class="callout">
+          <span class="callout-label">How to read this page</span>
+          <p>Each epic is a category of problem we're solving. Stories under each epic are concrete units of work. Every story carries a title, description, effort estimate, start date, and projected end date.</p>
+        </div>
+
+        <p>The Library catalog organizes finished agents by function (Marketing, QA, Development) for GTM. The epics below organize the work by problem domain — which is why QE and ADLC are tracked as separate epics even though both feed the Development and QA categories of the Library.</p>
+
+        <h2>Epics</h2>
+
+        <h3>Epic 01 — QE agent workflow <span class="pill pill-active">Shipping</span></h3>
+        <p>A multi-agent QE workflow on Zebrunner, designed to fully replicate the default QE flow end to end across seven agents. Five are shipped: test case generation, normalization, code generation, execution, and self-healing. Failure analysis with notification, and report generation, are the remaining two. Mobile build was completed most recently; Jira integration is live — moving a ticket to the right state triggers the workflow.</p>
+        <p>Built on LangGraph rather than locked to a single LLM SDK, so the underlying model can be swapped without re-architecting. Packaged as a standalone solution so it can plug into any Zebrunner-compatible stack.</p>
+        
+        <table>
+          <thead>
+            <tr><th>Agent</th><th>Status</th><th>What it does</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Test case generation</td>
+              <td>Shipped</td>
+              <td>Takes a user story and produces test case documentation in the format manual QE would have written by hand.</td>
+            </tr>
+            <tr>
+              <td>Normalization</td>
+              <td>Shipped</td>
+              <td>Evaluates whether a generated test case can be automated. Uses Playwright MCP and browser-use to walk the manual steps and pull metadata from the browser.</td>
+            </tr>
+            <tr>
+              <td>Code generation</td>
+              <td>Shipped</td>
+              <td>Generates the automation code for cases the normalization agent flagged as automatable. Opens the result as a pull request.</td>
+            </tr>
+            <tr>
+              <td>Execution</td>
+              <td>Shipped</td>
+              <td>Runs the generated test against the scalable Zebrunner grid. Reports results back into Zebrunner for tracking.</td>
+            </tr>
+            <tr>
+              <td>Self-healing</td>
+              <td>Shipped</td>
+              <td>Detects and repairs broken tests automatically when the underlying page or flow changes.</td>
+            </tr>
+            <tr>
+              <td>Failure analysis &amp; notification</td>
+              <td>In build</td>
+              <td>Packages screenshots, full stack trace, video, and self-healing attempts into a structured report so a developer can fix the issue without context-switching.</td>
+            </tr>
+            <tr>
+              <td>Report generation</td>
+              <td>In build</td>
+              <td>Produces release and regression reports on demand via the Zebrunner MCP — replacing the dashboards layer with LLM-driven, customer-shaped output.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Built on LangGraph rather than locked to a single LLM SDK, so the underlying model can be swapped without re-architecting. Jira integration is live — moving a ticket to the right state triggers the workflow. Next horizon: extending coverage from functional testing into non-functional — performance, scalability, chaos engineering.</p>
+
+        <h3>Epic 02 — ADLC agents <span class="pill pill-active">Priority</span></h3>
+        <p>Agents that operate across the agentic development lifecycle — Plan, Build, Quality, Release, Learn — as a closed loop. Story creation and refinement; code context and integration contracts; test generation and regression; release gating; and a Learn loop that feeds production signal back into planning. Stories under this epic deliver individual agents and the orchestration that connects them.</p>
+        <div class="placeholder">
+          <strong>Story breakdown in progress</strong>
+          Stories will appear here as they are scoped and added to the sprint backlog.
+        </div>
+
+        <h3>Epic 03 — Internal workflow agents</h3>
+        <p>Agents that solve day-to-day Solvd problems: timesheet submission, leave requests, SOW workflows, and similar friction points. These build out the internal agentic platform. <a href="#espresso" data-page="espresso">AI Espresso</a> is the first agent shipping under this epic — it is itself built as an agent.</p>
+        <div class="placeholder">
+          <strong>Story breakdown in progress</strong>
+          Initial candidates identified; sequencing and scope being finalized.
+        </div>
+
+        <h3>Epic 04 — Marketing agents</h3>
+        <p>Function-specific agents for marketing teams: SEO scouting and gap-fix, email subject and content generation, accessibility checks, campaign tooling.</p>
+        <div class="placeholder">
+          <strong>Story breakdown in progress</strong>
+        </div>
+
+        <h3>Epic 05 — Retail / vertical-specific agents</h3>
+        <p>Industry-tailored agents informed by current account work — personalization, recommendation, content contract checking against headless commerce stacks.</p>
+        <div class="placeholder">
+          <strong>Story breakdown in progress</strong>
+        </div>
+
+        <h2>Story format</h2>
+        <p>Each story will be tracked with the following fields:</p>
+        <table>
+          <thead>
+            <tr><th>Field</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Title</td><td>Short, action-oriented description of the agent or feature</td></tr>
+            <tr><td>Description</td><td>What's needed and why — the problem the story solves</td></tr>
+            <tr><td>Effort</td><td>Story points, set during sprint planning</td></tr>
+            <tr><td>Start date</td><td>Sprint start when the story is picked up</td></tr>
+            <tr><td>Projected end</td><td>Sprint end target</td></tr>
+          </tbody>
+        </table>
+
+        <div class="meta">Last updated 7 May 2026 · Backed by JIRA</div>
+      </div>
+    </section>
+
+    <!-- PLAN -->
+    <section class="page" id="page-plan">
+      <div class="content">
+        <div class="page-header">
+          <div class="breadcrumb">AI Garage / Internal</div>
+          <h1>Execution Plan</h1>
+          <p class="lede">Where the Garage is on the seven-month plan, and what's shipped so far.</p>
+        </div>
+
+        <h2>Plan, June – December 2026</h2>
+
+        <div class="gantt">
+          <div class="gantt-header">
+            <div class="spacer"></div>
+            <div class="gantt-months">
+              <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+            </div>
+          </div>
+
+          <div class="gantt-grid-wrapper">
+            <div class="gantt-now-label">We are here</div>
+            <div class="gantt-now"></div>
+
+            <div class="gantt-track">
+              <div class="gantt-track-label">QE / Zebrunner</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar" style="left: 12.5%; width: 75%;">7 agents · finalize reporting + failure analysis</div>
+              </div>
+            </div>
+            <div class="gantt-track">
+              <div class="gantt-track-label">ADLC</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar" style="left: 12.5%; width: 87.5%;">Plan → Build → Quality → Release → Learn loop</div>
+              </div>
+            </div>
+            <div class="gantt-track">
+              <div class="gantt-track-label">Marketing</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar soft" style="left: 12.5%; width: 50%;">SEO · email · accessibility · campaign</div>
+              </div>
+            </div>
+            <div class="gantt-track">
+              <div class="gantt-track-label">Retail / Vertical</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar soft" style="left: 37.5%; width: 50%;">Personalization · content contracts</div>
+              </div>
+            </div>
+            <div class="gantt-track">
+              <div class="gantt-track-label">Internal workflows</div>
+              <div class="gantt-track-area">
+                <div class="gantt-bar muted" style="left: 25%; width: 62.5%;">AI Espresso → intranet agents</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2>Accomplished so far</h2>
+        <div class="accomp-grid">
+          <div class="accomp-tile">
+            <div class="accomp-tile-num">5</div>
+            <div class="accomp-tile-label">QE agents</div>
+            <div class="accomp-tile-note">Shipped on Zebrunner — case gen, normalization, code gen, execution, self-healing.</div>
+          </div>
+          <div class="accomp-tile">
+            <div class="accomp-tile-num">3</div>
+            <div class="accomp-tile-label">ADLC agents</div>
+            <div class="accomp-tile-note">In build across story refinement, code context, and release gating.</div>
+          </div>
+          <div class="accomp-tile">
+            <div class="accomp-tile-num">5</div>
+            <div class="accomp-tile-label">Marketing agents</div>
+            <div class="accomp-tile-note">Scoped for the first sprint window — SEO, email subject, accessibility, campaign tooling.</div>
+          </div>
+          <div class="accomp-tile">
+            <div class="accomp-tile-num">4</div>
+            <div class="accomp-tile-label">Retail candidates</div>
+            <div class="accomp-tile-note">Vertical agents identified from current account work, sequencing in progress.</div>
+          </div>
+        </div>
+
+        <p><strong>Upcoming months:</strong> June kicks off the build sprints. July–September focuses Marketing and the QE closure. October onward extends into Retail vertical agents and the internal workflow platform.</p>
+
+        <div class="weekly-footer">This content will be updated at the end of every Friday.</div>
+
+        <div class="meta">Last updated 12 May 2026</div>
+      </div>
+    </section>
+
+    <!-- LIBRARY -->
+    <section class="page" id="page-library">
+      <div class="content">
+        <div class="page-header">
+          <div class="breadcrumb">AI Garage / Library</div>
+          <h1>Agentic Library</h1>
+          <p class="lede">Working agents, organized by function. Marketing. QA. Development.</p>
+        </div>
+
+        <div class="callout">
+          <span class="callout-label">For GTM teams</span>
+          <p>Browse the catalog by function. Each agent will list what it does, what stack it works with, and a contact for using it on customer engagements. The Library is internal — agents listed here are not yet customer-facing.</p>
+        </div>
+
+        <h2>Marketing</h2>
+        <div class="placeholder">
+          <strong>No agents shipped yet</strong>
+          First marketing agents will appear here as Sprint 1 ships.
+        </div>
+
+        <h2>QA / QE</h2>
+        <p>A multi-agent QE workflow on Zebrunner — five agents shipped, with case generation, normalization, code generation, execution, and self-healing in production. Failure analysis, notification, and reporting agents in build.</p>
+        <div class="placeholder">
+          <strong>Catalog entries coming</strong>
+          The QE agents will be documented as Library entries — what each does, how to invoke it, and which customer engagements they're suited for.
+        </div>
+
+        <h2>Development / ADLC</h2>
+        <p>Agents that operate across the agentic development lifecycle — Plan, Build, Quality, Release, and Learn — as a closed loop. Story creation and refinement; code context and integration contracts in the BFF layer; test generation and regression intelligence handing into the QE workflow at a defined API entry point; release gating; and a Learn loop feeding production signal back into stories.</p>
+        <div class="placeholder">
+          <strong>Catalog entries coming</strong>
+          ADLC agents will be added as they ship from the current build.
+        </div>
+
+        <div class="meta">Last updated 7 May 2026</div>
+      </div>
+    </section>
+
+    <!-- AI ESPRESSO -->
+    <!--
+      The current digest is embedded live from editions/latest.html.
+      That file is vendored from the news_agent repo (jackiehimel/ai-espresso)
+      and refreshed by running `npm run sync:espresso`. See README.md for the
+      refresh workflow. The metadata block below is populated at sync time from
+      editions/manifest.json; when served over HTTP it self-updates via fetch.
+    -->
+    <section class="page" id="page-espresso">
+      <div class="content">
+        <div class="page-header">
+          <div class="breadcrumb">AI Garage / Programs</div>
+          <h1>AI Espresso <span style="font-size:0.7em;">☕</span></h1>
+          <p class="lede">A short-form AI news digest, built as an agent. Today's edition is embedded below — the same one that lands in inboxes and Teams.</p>
+        </div>
+
+        <h2>Today's edition</h2>
+
+        <div class="espresso-meta">
+          <div>
+            <div class="espresso-meta-label">Latest issue</div>
+            <div data-espresso-issue class="espresso-meta-issue">NO. 000 · Mon May 11, 2026</div>
+          </div>
+          <div data-espresso-headline class="espresso-meta-headline">
+            Rivals teamed up. Voice got smarter. And AI started running a Fortune-500 supply chain.
+          </div>
+          <div data-espresso-shots class="espresso-meta-issue">4 shots</div>
+        </div>
+
+        <div class="espresso-frame">
+          <iframe
+            src="editions/latest.html"
+            title="AI Espresso — current edition"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          ></iframe>
+        </div>
+
+        <div class="espresso-actions">
+          <a href="editions/latest.html" target="_blank" rel="noopener">Open edition in a new tab ↗</a>
+          <a href="editions/latest.md" target="_blank" rel="noopener">View as Markdown</a>
+          <a href="https://github.com/jackiehimel/ai-espresso" target="_blank" rel="noopener">Source on GitHub</a>
+        </div>
+
+        <h2>What it is</h2>
+        <p>AI Espresso is a snackable digest that keeps the Agentic Software Engineering org market-aware. Designed to be read in under a minute. Format is a small set of crisp updates — three news shots and a try-this prompt — not a news article.</p>
+
+        <p>The digest is built as an agent. Each edition runs through an eight-stage pipeline — ingest, cluster, score, compose, render — with structured outputs validated at every step. That makes it the first internal-facing agent the Garage runs in production.</p>
+
+        <h2>Cadence</h2>
+        <p>Phase 1 publishes weekly on Mondays at 8am ET. Phase 2 — daily Monday through Friday — turns on after four consecutive clean weekly editions. Same agent, different cron config.</p>
+
+        <h2>Archive</h2>
+        <table data-espresso-archive>
+          <thead>
+            <tr><th>Issue</th><th>Date</th><th>Headline</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>NO. 000</td>
+              <td>Mon May 11, 2026</td>
+              <td>Anthropic rents Colossus, OpenAI voice thinks mid-sentence, AlphaEvolve at BASF.</td>
+              <td><a href="editions/latest.html" target="_blank" rel="noopener">Read →</a></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="meta" data-espresso-updated>Last updated 12 May 2026 · Vendored from jackiehimel/ai-espresso · Refresh with <code>npm run sync:espresso</code></div>
+      </div>
+    </section>
+
+    <!-- ROUNDTABLE -->
+    <section class="page" id="page-roundtable">
+      <div class="content">
+        <div class="page-header">
+          <div class="breadcrumb">AI Garage / Programs</div>
+          <h1>AI Roundtable<span class="pill pill-soon">Launches June 1</span></h1>
+          <p class="lede">A weekly company-wide session where one presenter walks through an idea or build.</p>
+        </div>
+
+        <h2>Format</h2>
+        <p>Each session is 30 minutes — a 15-minute presentation followed by 15 minutes of Q&amp;A. Sessions are recorded. Anyone in the company can submit to present.</p>
+
+        <p>Announcements go out before each session with the talk title, three key takeaways, and a short speaker bio so attendees know what they're walking into.</p>
+
+        <h2>Schedule</h2>
+        <div class="placeholder">
+          <strong>Schedule populates after June 1 launch</strong>
+          Upcoming presenters and topics will appear here.
+        </div>
+
+        <h2>Submit to present</h2>
+        <p>Have something you've built, learned, or want to walk the org through? Submit below. The squad reviews submissions on a regular cadence and slots accepted talks into the schedule.</p>
+
+        <div class="form-mock">
+          <div class="form-mock-row">
+            <span class="form-mock-label">Your name</span>
+            <div class="form-mock-input"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Team / org</span>
+            <div class="form-mock-input"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Talk title</span>
+            <div class="form-mock-input"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Three key takeaways</span>
+            <div class="form-mock-input tall"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Short speaker bio (2&ndash;3 sentences)</span>
+            <div class="form-mock-input tall"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Preferred timeframe</span>
+            <div class="form-mock-input"></div>
+          </div>
+        </div>
+
+        <div class="placeholder">
+          <strong>Form not yet wired up</strong>
+          Once live, submissions route to the squad's review queue. Until then, reach out through the <a href="#squad" data-page="squad">Contact</a> page.
+        </div>
+
+        <h2>Recordings</h2>
+        <div class="placeholder">
+          <strong>Past sessions appear here once recorded</strong>
+        </div>
+
+        <div class="meta">Last updated 7 May 2026</div>
+      </div>
+    </section>
+
+    <!-- SUBMIT -->
+    <section class="page" id="page-submit">
+      <div class="content">
+        <div class="page-header">
+          <div class="breadcrumb">AI Garage / Get Involved</div>
+          <h1>Submit an Idea</h1>
+          <p class="lede">Bring an agent idea to the Workshop track. Approved ideas get engineering time and coaching.</p>
+        </div>
+
+        <h2>Before you submit</h2>
+        <p>The intake exists to qualify ideas, not to filter for polish. Rough ideas are welcome. What we need from you is a clear problem statement and a sense of what success looks like.</p>
+
+        <p>If your idea is approved, you stay involved through delivery. The Garage builds with you — submitters ship working agents, not proposals.</p>
+
+        <h2>Submission form</h2>
+        <div class="form-mock">
+          <div class="form-mock-row">
+            <span class="form-mock-label">Your name</span>
+            <div class="form-mock-input"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Idea title</span>
+            <div class="form-mock-input"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Problem statement</span>
+            <div class="form-mock-input tall"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Business case</span>
+            <div class="form-mock-input tall"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Proposed solution</span>
+            <div class="form-mock-input tall"></div>
+          </div>
+          <div class="form-mock-row">
+            <span class="form-mock-label">Expected outcome</span>
+            <div class="form-mock-input"></div>
+          </div>
+        </div>
+
+        <div class="placeholder">
+          <strong>Form not yet wired up</strong>
+          Final form will route to the squad's review queue. Until then, reach out to the squad directly (see <a href="#squad" data-page="squad">Squad &amp; Contact</a>).
+        </div>
+
+        <div class="meta">Last updated 7 May 2026</div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="page" id="page-squad">
+      <div class="content">
+        <div class="page-header">
+          <div class="breadcrumb">AI Garage / Get Involved</div>
+          <h1>Contact</h1>
+          <p class="lede">How to engage with the Garage, by what you're trying to do.</p>
+        </div>
+
+        <div class="callout">
+          <span class="callout-label">A note on this page</span>
+          <p>The Garage is run inside the Agentic Software Engineering org. Day-to-day operations, intake, and technical direction are handled within ASE leadership. Use the paths below to find the right entry point for what you need.</p>
+        </div>
+
+        <h2>How to reach us</h2>
+        <table>
+          <thead>
+            <tr><th>If you want to…</th><th>Do this</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Use a Library agent on a customer engagement</td><td>Browse the <a href="#library" data-page="library">Library catalog</a> and follow the contact path listed on the agent's entry</td></tr>
+            <tr><td>Propose a new agent</td><td><a href="#submit" data-page="submit">Submit through the intake form</a></td></tr>
+            <tr><td>Present at the AI Roundtable</td><td>Use the <a href="#roundtable" data-page="roundtable">Roundtable submission queue</a></td></tr>
+            <tr><td>Contribute engineering time</td><td>Raise availability with your manager, then flag interest through the intake form</td></tr>
+            <tr><td>Share an idea informally</td><td>Reach out through your ASE leadership chain</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Working with the Garage</h2>
+        <p>Approved ideas are built collaboratively. Submitters stay involved through delivery — the output is a working agent, not a proposal. Reviewers and technical coaches are drawn from across ASE depending on the domain of the submission.</p>
+
+        <div class="meta">Last updated 7 May 2026</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // inline boot: hash nav, toggles, gantt today, manifest fetch, iframe resize
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+
+    const target = document.getElementById('page-' + pageId);
+    if (target) {
+      target.classList.add('active');
+    } else {
+      document.getElementById('page-home').classList.add('active');
+      pageId = 'home';
+    }
+
+    const navLink = document.querySelector(`nav a[data-page="${pageId}"]`);
+    if (navLink) navLink.classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  // nav: click sets location hash
+  document.querySelectorAll('a[data-page]').forEach(link => {
+    link.addEventListener('click', e => {
+      const page = link.getAttribute('data-page');
+      window.location.hash = page;
+    });
+  });
+
+  // hashchange -> showPage
+  window.addEventListener('hashchange', () => {
+    const page = window.location.hash.replace('#', '') || 'home';
+    showPage(page);
+  });
+
+  // hero cards: library + workshop panel toggle
+  document.querySelectorAll('[data-toggle]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const targetId = btn.getAttribute('data-toggle');
+      const panel = document.getElementById(targetId);
+      if (!panel) return;
+      const isOpen = panel.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      const toggleLabel = btn.querySelector('.hero-card-toggle');
+      if (toggleLabel) toggleLabel.firstChild.textContent = isOpen ? 'Close ' : 'Open ';
+      if (isOpen) {
+        // scroll opened panel into view
+        setTimeout(() => {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 200);
+      }
+    });
+  });
+
+  // library: one category detail open at a time
+  document.querySelectorAll('[data-cat-toggle]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const targetId = btn.getAttribute('data-cat-toggle');
+      const detail = document.getElementById(targetId);
+      if (!detail) return;
+
+      // close sibling details
+      document.querySelectorAll('.category-detail.open').forEach(d => {
+        if (d.id !== targetId) d.classList.remove('open');
+      });
+      document.querySelectorAll('[data-cat-toggle]').forEach(b => {
+        if (b !== btn) b.setAttribute('aria-expanded', 'false');
+      });
+
+      const isOpen = detail.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  });
+
+  // gantt today: eight cols may–dec (same grid as .gantt-months)
+  // maps viewer calendar month/day; jan–apr -> 0 (start of may col on strip)
+  function ganttNowPercent(date) {
+    var planMonths = [4, 5, 6, 7, 8, 9, 10, 11];
+    var colW = 100 / planMonths.length;
+    var m = date.getMonth();
+    if (m < 4) return 0;
+    var col = planMonths.indexOf(m);
+    var y = date.getFullYear();
+    var dim = new Date(y, m + 1, 0).getDate();
+    var dayProgress = (date.getDate() - 1 + (date.getHours() + date.getMinutes() / 60) / 24) / dim;
+    return Math.min(100, col * colW + dayProgress * colW);
+  }
+
+  function updateGanttNowMarkers() {
+    var pct = ganttNowPercent(new Date());
+    document.querySelectorAll('.gantt').forEach(function (el) {
+      el.style.setProperty('--gantt-now-fr', pct.toFixed(4));
+    });
+  }
+
+  updateGanttNowMarkers();
+
+  // boot from hash
+  const initial = window.location.hash.replace('#', '') || 'home';
+  showPage(initial);
+
+  // espresso: hydrate issue + archive from editions/manifest.json over http(s)
+  // file://: fetch blocked; static html fallback stays
+  (async () => {
+    try {
+      const res = await fetch('editions/manifest.json', { cache: 'no-cache' });
+      if (!res.ok) return;
+      const manifest = await res.json();
+      const latest = manifest && manifest.latest;
+      if (!latest) return;
+
+      const fmtIssue = `${latest.label || ''}${latest.date_human ? ' · ' + latest.date_human : ''}`.trim();
+      const issueEl = document.querySelector('[data-espresso-issue]');
+      if (issueEl && fmtIssue) issueEl.textContent = fmtIssue;
+
+      const headlineEl = document.querySelector('[data-espresso-headline]');
+      if (headlineEl && latest.headline) headlineEl.textContent = latest.headline;
+
+      const shotsEl = document.querySelector('[data-espresso-shots]');
+      if (shotsEl && latest.shots != null) shotsEl.textContent = `${latest.shots} shots`;
+
+      const updatedEl = document.querySelector('[data-espresso-updated]');
+      if (updatedEl && latest.date_iso) {
+        updatedEl.innerHTML =
+          `Last synced ${latest.date_iso} · Vendored from ${latest.source_repo || 'jackiehimel/ai-espresso'} · Refresh with <code>npm run sync:espresso</code>`;
+      }
+
+      const archive = Array.isArray(manifest.archive) ? manifest.archive : [];
+      const tbody = document.querySelector('[data-espresso-archive] tbody');
+      if (tbody && archive.length) {
+        tbody.innerHTML = archive
+          .map((entry) => {
+            const href = entry.html || 'latest.html';
+            const date = entry.date_human || entry.date_iso || '';
+            const headline = entry.headline || '';
+            const label = entry.label || `NO. ${String(entry.number ?? 0).padStart(3, '0')}`;
+            return `<tr><td>${label}</td><td>${date}</td><td>${headline}</td><td><a href="editions/${href}" target="_blank" rel="noopener">Read →</a></td></tr>`;
+          })
+          .join('');
+      }
+    } catch {
+      // file:// or missing manifest: keep static markup
+    }
+  })();
+
+  // espresso iframe: set height from content doc when same-origin (e.g. safari file://)
+  // chromium file:// per-file origin: keep css height on iframe
+  (() => {
+    const iframe = document.querySelector('.espresso-frame iframe');
+    if (!iframe) return;
+    iframe.addEventListener('load', () => {
+      try {
+        const doc = iframe.contentDocument;
+        if (!doc) return;
+        const h = Math.max(
+          doc.documentElement.scrollHeight,
+          doc.body ? doc.body.scrollHeight : 0,
+        );
+        if (h > 200) iframe.style.height = h + 'px';
+      } catch {
+        // cross-origin: keep css height
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

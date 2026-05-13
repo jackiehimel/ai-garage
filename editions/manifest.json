@@ -1,0 +1,26 @@
+{
+  "latest": {
+    "number": 0,
+    "label": "NO. 000",
+    "date_iso": "2026-05-12",
+    "date_human": "MON · MAY 11 · 2026",
+    "shots": 4,
+    "headline": "Rivals teamed up. Voice got smarter. And AI started running a Fortune-500 supply chain.",
+    "html": "latest.html",
+    "markdown": "latest.md",
+    "variant": "c",
+    "source_repo": "jackiehimel/ai-espresso",
+    "source_path": "editions/edition_0_variant_c.html"
+  },
+  "archive": [
+    {
+      "number": 0,
+      "label": "NO. 000",
+      "date_iso": "2026-05-12",
+      "date_human": "MON · MAY 11 · 2026",
+      "headline": "Rivals teamed up. Voice got smarter. And AI started running a Fortune-500 supply chain.",
+      "html": "latest.html",
+      "variant": "c"
+    }
+  ]
+}
