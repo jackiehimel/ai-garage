@@ -5,6 +5,7 @@
   "type": "module",
   "description": "AI Garage Portal prototype with Playwright-driven visual verification.",
   "scripts": {
+    "build": "node scripts/write-site-config.mjs",
     "snap": "node scripts/snap.mjs",
     "snap:merged": "node scripts/snap.mjs --file ai_garage_portal_merged.html --full",
     "sync:espresso": "node scripts/sync-espresso.mjs",

@@ -67,4 +67,4 @@ Best on diffs <500 lines. Pair with `git diff main...HEAD | pbcopy`.
 
 ---
 
-*brewed by ai espresso · [spot something off?](mailto:jacqueline.himel@vanderbilt.edu?subject=AI%20Espresso%20issue%20report) · [source allowlist](https://github.com/jackiehimel/ai-espresso/blob/main/feeds.json)*
+*brewed by ai espresso · spot something off? — use internal AI Garage channel · allowlist link rewritten on next `npm run sync:espresso` (needs GARAGE_ESPRESSO_REPO)*

@@ -51,9 +51,14 @@ The chosen variant (or `null` for the plain edition) is recorded in
 `manifest.json` under `latest.variant` and on each archive entry, so the
 portal can label issues by flavor later if useful.
 
-The source repo is `jackiehimel/ai-espresso`. Once the news_agent pipeline
-publishes editions on a cron (see `AGENT_ESPRESSO.md` in that repo), the
-production refresh is the same command — wire it into whatever cron, CI, or
+The source GitHub slug is **not** committed in the portal HTML. Set `GARAGE_ESPRESSO_REPO`
+when running `npm run sync:espresso`, or add `espressoSourceRepo` to a local `site-config.json`
+(see `site-config.json.example`). Vercel builds should set `GARAGE_ESPRESSO_REPO` (and optionally
+`GARAGE_ESPRESSO_FEEDBACK_MAILTO`) as environment variables so `scripts/write-site-config.mjs`
+can emit `site-config.json` without checking secrets into git.
+
+Once the news_agent pipeline publishes editions on a cron (see that repo’s docs), the
+production refresh is the same sync command — wire it into whatever cron, CI, or
 post-publish hook deploys the portal.
 
 ## Why a vendored copy instead of a hosted URL

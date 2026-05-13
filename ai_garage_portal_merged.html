@@ -6,6 +6,8 @@
 #   left calc skips label column so marker lines up with month header + bars.
 # espresso: fetch editions/manifest.json when http(s); file:// keeps static copy.
 # iframe load: resize height from content when same-origin; else css fallback.
+# no secrets in this file: optional site-config.json (from env at build) holds
+#   public source repo url for espresso; sync uses GARAGE_ESPRESSO_REPO — see .env.example.
 -->
 <html lang="en">
 <head>
@@ -1640,11 +1642,9 @@
 
     <!-- AI ESPRESSO -->
     <!--
-      The current digest is embedded live from editions/latest.html.
-      That file is vendored from the news_agent repo (jackiehimel/ai-espresso)
-      and refreshed by running `npm run sync:espresso`. See README.md for the
-      refresh workflow. The metadata block below is populated at sync time from
-      editions/manifest.json; when served over HTTP it self-updates via fetch.
+      Embedded digest: editions/latest.html. Refreshed via npm run sync:espresso
+      from your news_agent checkout; do not put api keys or private urls in this
+      html — repo + feedback links come from env at sync and site-config at deploy.
     -->
     <section class="page" id="page-espresso">
       <div class="content">
@@ -1679,7 +1679,7 @@
         <div class="espresso-actions">
           <a href="editions/latest.html" target="_blank" rel="noopener">Open edition in a new tab ↗</a>
           <a href="editions/latest.md" target="_blank" rel="noopener">View as Markdown</a>
-          <a href="https://github.com/jackiehimel/ai-espresso" target="_blank" rel="noopener">Source on GitHub</a>
+          <a id="garage-espresso-source-link" href="#">Source on GitHub</a>
         </div>
 
         <h2>What it is</h2>
@@ -1705,7 +1705,7 @@
           </tbody>
         </table>
 
-        <div class="meta" data-espresso-updated>Last updated 12 May 2026 · Vendored from jackiehimel/ai-espresso · Refresh with <code>npm run sync:espresso</code></div>
+        <div class="meta" data-espresso-updated>Last updated 12 May 2026 · Source repo set at deploy or in manifest · Refresh with <code>npm run sync:espresso</code></div>
       </div>
     </section>
 
@@ -1958,13 +1958,34 @@
 
   updateGanttNowMarkers();
 
-  // boot from hash
   const initial = window.location.hash.replace('#', '') || 'home';
   showPage(initial);
 
-  // espresso: hydrate issue + archive from editions/manifest.json over http(s)
-  // file://: fetch blocked; static html fallback stays
-  (async () => {
+  (async function hydrateGarageConfigAndEspresso() {
+    window.__GARAGE_SITE = {};
+    try {
+      const cr = await fetch('site-config.json', { cache: 'no-cache' });
+      if (cr.ok) Object.assign(window.__GARAGE_SITE, await cr.json());
+    } catch (_) {}
+
+    const srcA = document.getElementById('garage-espresso-source-link');
+    if (srcA) {
+      const srcUrl = String(window.__GARAGE_SITE.espressoSourceUrl || '').trim();
+      if (srcUrl) {
+        srcA.setAttribute('href', srcUrl);
+        srcA.setAttribute('rel', 'noopener');
+        srcA.setAttribute('target', '_blank');
+      } else {
+        srcA.removeAttribute('href');
+        srcA.removeAttribute('target');
+        srcA.removeAttribute('rel');
+        srcA.textContent = 'Source repository (configure deploy env or site-config)';
+        srcA.style.color = 'var(--ink-faint)';
+        srcA.style.textDecoration = 'none';
+        srcA.style.cursor = 'default';
+      }
+    }
+
     try {
       const res = await fetch('editions/manifest.json', { cache: 'no-cache' });
       if (!res.ok) return;
@@ -1984,8 +2005,13 @@
 
       const updatedEl = document.querySelector('[data-espresso-updated]');
       if (updatedEl && latest.date_iso) {
-        updatedEl.innerHTML =
-          `Last synced ${latest.date_iso} · Vendored from ${latest.source_repo || 'jackiehimel/ai-espresso'} · Refresh with <code>npm run sync:espresso</code>`;
+        const repo =
+          String(latest.source_repo || '').trim() ||
+          String(window.__GARAGE_SITE.espressoSourceRepo || '').trim();
+        const vend = repo
+          ? ` · Vendored from ${repo}`
+          : ' · Source repo not configured (set GARAGE_ESPRESSO_REPO at build or sync)';
+        updatedEl.innerHTML = `Last synced ${latest.date_iso}${vend} · Refresh with <code>npm run sync:espresso</code>`;
       }
 
       const archive = Array.isArray(manifest.archive) ? manifest.archive : [];

@@ -172,12 +172,56 @@ function extractRelativeAssets(html) {
   return [...found];
 }
 
+async function resolveEspressoSourceRepo() {
+  const fromEnv = process.env.GARAGE_ESPRESSO_REPO?.trim();
+  if (fromEnv) return fromEnv;
+  try {
+    const raw = await fs.readFile(path.join(REPO_ROOT, "site-config.json"), "utf8");
+    const j = JSON.parse(raw);
+    const fromFile = j.espressoSourceRepo?.trim();
+    if (fromFile) return fromFile;
+  } catch {}
+  throw new Error(
+    "Set GARAGE_ESPRESSO_REPO or add espressoSourceRepo to site-config.json (see site-config.json.example).",
+  );
+}
+
+function buildSyncedFooters(repo) {
+  const allowlist = `https://github.com/${repo}/blob/main/feeds.json`;
+  const fb = process.env.GARAGE_ESPRESSO_FEEDBACK_MAILTO?.trim();
+  const spotHtml = fb
+    ? `<a href="${String(fb).replace(/&/g, "&amp;").replace(/"/g, "&quot;")}">spot something off?</a>`
+    : `<span>spot something off? (set GARAGE_ESPRESSO_FEEDBACK_MAILTO)</span>`;
+  const htmlFooter = `  <footer class="footer">\n    brewed by ai espresso · ${spotHtml} · <a href="${allowlist}" target="_blank" rel="noopener">source allowlist</a>\n  </footer>`;
+  const spotMd = fb
+    ? `[spot something off?](${fb})`
+    : `spot something off? (set GARAGE_ESPRESSO_FEEDBACK_MAILTO)`;
+  const mdLine = `*brewed by ai espresso · ${spotMd} · [source allowlist](${allowlist})*`;
+  return { htmlFooter, mdLine };
+}
+
+function applySyncedFooters(html, md, repo) {
+  const { htmlFooter, mdLine } = buildSyncedFooters(repo);
+  let newHtml = html.replace(/<footer class="footer">[\s\S]*?<\/footer>/m, htmlFooter);
+  if (newHtml === html) {
+    console.warn("sync-espresso: footer block not replaced in latest.html (unexpected shape).");
+    newHtml = html;
+  }
+  let newMd = md.replace(/\*brewed by ai espresso ·[^\n]*\*/m, mdLine);
+  if (newMd === md) {
+    console.warn("sync-espresso: footer line not replaced in latest.md (unexpected shape).");
+    newMd = md;
+  }
+  return { html: newHtml, md: newMd };
+}
+
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
 
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
+  const espressoSourceRepo = await resolveEspressoSourceRepo();
   const sourceRoot = opts.source ?? defaultSource();
   const sourceEditions = path.join(sourceRoot, "editions");
 
@@ -220,8 +264,9 @@ async function main() {
 
   const html = await fs.readFile(pick.htmlPath, "utf8");
   const md = await fs.readFile(pick.mdPath, "utf8");
-  await fs.writeFile(path.join(EDITIONS_DIR, "latest.html"), html);
-  await fs.writeFile(path.join(EDITIONS_DIR, "latest.md"), md);
+  const { html: htmlOut, md: mdOut } = applySyncedFooters(html, md, espressoSourceRepo);
+  await fs.writeFile(path.join(EDITIONS_DIR, "latest.html"), htmlOut);
+  await fs.writeFile(path.join(EDITIONS_DIR, "latest.md"), mdOut);
 
   // Vendor any relative assets the edition references (variants embed image
   // panels via paths like "edition_0/assets/variant_b_01.png"). Resolve those
@@ -289,7 +334,7 @@ async function main() {
       html: "latest.html",
       markdown: "latest.md",
       variant: pick.variant,
-      source_repo: "jackiehimel/ai-espresso",
+      source_repo: espressoSourceRepo,
       source_path: path.relative(sourceRoot, pick.htmlPath),
     },
     archive: dedup,
