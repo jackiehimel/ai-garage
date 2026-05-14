@@ -1,12 +1,12 @@
 # clones the digest source repo, runs scripts/sync-espresso.mjs, commits editions/ if changed.
-# schedule: monday 14:00 utc (roughly after 8am et); edit cron as needed.
-# private source: set repo variable NEWS_AGENT_REPOSITORY and secret NEWS_AGENT_CLONE_TOKEN (pat with repo read).
+# schedule: daily 14:00 utc (roughly 10am et / 9am cdt); edit cron as needed.
+# private source: set repo variable AI_ESPRESSO_REPOSITORY and secret AI_ESPRESSO_CLONE_TOKEN (pat with repo read).
 
 name: Sync AI Espresso editions
 
 on:
   schedule:
-    - cron: "0 14 * * 1"
+    - cron: "0 14 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -28,22 +28,22 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Clone news_agent
+      - name: Clone ai-espresso
         env:
-          NEWS_AGENT_REPOSITORY: ${{ vars.NEWS_AGENT_REPOSITORY }}
-          NEWS_AGENT_CLONE_TOKEN: ${{ secrets.NEWS_AGENT_CLONE_TOKEN }}
+          AI_ESPRESSO_REPOSITORY: ${{ vars.AI_ESPRESSO_REPOSITORY }}
+          AI_ESPRESSO_CLONE_TOKEN: ${{ secrets.AI_ESPRESSO_CLONE_TOKEN }}
         run: |
           set -euo pipefail
-          REPO="${NEWS_AGENT_REPOSITORY:-jackiehimel/news_agent}"
-          DEST="${GITHUB_WORKSPACE}/news_agent"
-          if [ -n "${NEWS_AGENT_CLONE_TOKEN:-}" ]; then
-            git clone --depth 1 "https://x-access-token:${NEWS_AGENT_CLONE_TOKEN}@github.com/${REPO}.git" "$DEST"
+          REPO="${AI_ESPRESSO_REPOSITORY:-jackiehimel/ai-espresso}"
+          DEST="${GITHUB_WORKSPACE}/ai-espresso"
+          if [ -n "${AI_ESPRESSO_CLONE_TOKEN:-}" ]; then
+            git clone --depth 1 "https://x-access-token:${AI_ESPRESSO_CLONE_TOKEN}@github.com/${REPO}.git" "$DEST"
           else
             git clone --depth 1 "https://github.com/${REPO}.git" "$DEST"
           fi
 
       - name: Run sync
-        run: node scripts/sync-espresso.mjs --source "${GITHUB_WORKSPACE}/news_agent"
+        run: node scripts/sync-espresso.mjs --source "${GITHUB_WORKSPACE}/ai-espresso"
 
       - name: Commit and push if changed
         run: |
@@ -55,5 +55,5 @@ jobs:
             echo "No changes under editions/; nothing to commit."
             exit 0
           fi
-          git commit -m "chore: sync ai espresso editions from news_agent"
+          git commit -m "chore: sync ai espresso editions from ai-espresso"
           git push

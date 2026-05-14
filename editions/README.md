@@ -21,7 +21,7 @@ npm run sync:espresso
 
 Under the hood that runs `node scripts/sync-espresso.mjs`, which:
 
-1. Looks at `~/Documents/Solvd/news_agent/editions/` for the highest-numbered
+1. Looks at `~/Documents/Solvd/ai-espresso/editions/` for the highest-numbered
    `edition_N.{html,md}` pair (override with `--source <path>` or pin a
    specific one with `--edition edition_3`).
 2. Copies it to `latest.html` and `latest.md` here.
@@ -33,7 +33,7 @@ Under the hood that runs `node scripts/sync-espresso.mjs`, which:
 
 ### Variant editions
 
-`news_agent` also publishes alternate layouts as
+`ai-espresso` also publishes alternate layouts as
 `edition_N_variant_<x>.{html,md}` (e.g. `edition_0_variant_c.html`, the
 "Newspaper Comic · Snackable" flavor). Pass `--variant <name>` to pull the
 highest-numbered variant of that flavor instead of the plain edition:
@@ -51,7 +51,7 @@ The chosen variant (or `null` for the plain edition) is recorded in
 `manifest.json` under `latest.variant` and on each archive entry, so the
 portal can label issues by flavor later if useful.
 
-The source repo is `jackiehimel/ai-espresso`. Once the news_agent pipeline
+The source repo is `jackiehimel/ai-espresso`. Once the ai-espresso pipeline
 publishes editions on a cron (see `AGENT_ESPRESSO.md` in that repo), the
 production refresh is the same command — wire it into whatever cron, CI, or
 post-publish hook deploys the portal.

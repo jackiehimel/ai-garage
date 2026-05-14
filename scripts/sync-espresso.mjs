@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 // sync-espresso.mjs — pull the most recent AI Espresso edition from the
-// news_agent repo into garage/editions/ so the portal's "AI Espresso" page
+// ai-espresso repo into garage/editions/ so the portal's "AI Espresso" page
 // renders today's digest without depending on any deployed URL.
 //
 // Defaults assume both repos sit side-by-side:
-//   ~/Documents/Solvd/garage      (this repo)
-//   ~/Documents/Solvd/news_agent  (ai-espresso source)
+//   ~/Documents/Solvd/garage       (this repo)
+//   ~/Documents/Solvd/ai-espresso  (digest source)
 //
-// Override with --source <abs path to news_agent>.
+// Override with --source <abs path to ai-espresso>.
 //
 // What this does:
-//   1. Picks the highest-numbered editions/edition_N.{html,md} in news_agent
+//   1. Picks the highest-numbered editions/edition_N.{html,md} in ai-espresso
 //      (falls back to edition_0 if that's all that exists). When --variant is
 //      passed, matches edition_N_variant_<name>.{html,md} instead.
 //   2. Copies them to garage/editions/latest.html and latest.md.
@@ -21,7 +21,7 @@
 //
 // Usage:
 //   node scripts/sync-espresso.mjs
-//   node scripts/sync-espresso.mjs --source /path/to/news_agent
+//   node scripts/sync-espresso.mjs --source /path/to/ai-espresso
 //   node scripts/sync-espresso.mjs --edition edition_3            # pin a specific one
 //   node scripts/sync-espresso.mjs --variant c                    # latest variant C
 //   node scripts/sync-espresso.mjs --edition edition_0 --variant c
@@ -59,7 +59,7 @@ function parseArgs(argv) {
 }
 
 function defaultSource() {
-  return path.join(os.homedir(), "Documents", "Solvd", "news_agent");
+  return path.join(os.homedir(), "Documents", "Solvd", "ai-espresso");
 }
 
 async function pickLatestEdition(sourceEditions, variant) {
@@ -185,7 +185,7 @@ async function main() {
     await fs.access(sourceEditions);
   } catch {
     throw new Error(
-      `news_agent editions dir not found at ${sourceEditions}. Pass --source <path>.`,
+      `ai-espresso editions dir not found at ${sourceEditions}. Pass --source <path>.`,
     );
   }
 
