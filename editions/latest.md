@@ -1,69 +1,71 @@
-# ai espresso ☕ — Edition 1 · Variant C (Newspaper Comic · Snackable)
+# ai espresso ☕ — Edition 2 · Variant C (Newspaper Comic · Snackable)
 
-**THU · MAY 21 · 2026**
+**SUN · MAY 17 · 2026**
 
-*Anthropic lands $200 million to tackle. Cut the noise with the four. And Cohere’s new Aya models bring high-performance.*
-
----
-
-![Anthropic lands $200 million to tackle global health and education](edition_1/assets/variant_c_01.png)
-
-**ENTERPRISE**
-
-## Anthropic lands $200 million to tackle global health and education
-
-Anthropic is teaming up with the Gates Foundation to build AI tools for public health and farming in lower-income countries. The $200 million fund supports researchers using Claude to improve disease tracking and crop yields, moving AI beyond Silicon Valley to address urgent humanitarian needs.
-
-*Claude is moving from office productivity into large-scale global health and development projects.*
-
-[Anthropic News](https://www.anthropic.com/news/gates-foundation-partnership) · May 21
+*Musk vs. Altman jury trial wraps. YouTube now lets anyone flag AI. And arxiv will ban you.*
 
 ---
 
-![Cut the noise with the four AI apps actually worth using](edition_1/assets/variant_c_02.png)
+![Musk vs. Altman jury trial wraps closing arguments today](edition_2/assets/variant_c_01.png)
 
 **TOOLS**
 
-## Cut the noise with the four AI apps actually worth using
+## Musk vs. Altman jury trial wraps closing arguments today
 
-Stop scrolling through generic lists and start using the tools that actually change how you work. Whether you're using research assistants to browse the live web or creative engines to turn sketches into prototypes, these apps represent the current gold standard for professional AI utility.
+The lawsuit alleging OpenAI broke its nonprofit mission by partnering with Microsoft is now in the jury's hands. Musk's legal team argues Altman abandoned the original charter; OpenAI says the shift was necessary to compete and that Musk wanted control when he left in 2018.
 
-*Most AI tools are hype, but these specific apps provide immediate utility for your daily professional workflow.*
+*A jury verdict could reshape how AI labs structure themselves and what 'open' actually means in OpenAI's name.*
 
-[kleap.co](https://kleap.co/blog/best-ai-app) · May 21
+[NYT — Technology](https://www.nytimes.com/2026/05/14/technology/openai-trial-elon-musk-sam-altman.html) · May 17
 
 ---
 
-![Cohere’s new Aya models bring high-performance AI to over 70 languages](edition_1/assets/variant_c_03.png)
+![YouTube now lets anyone flag AI deepfakes of themselves](edition_2/assets/variant_c_02.png)
 
 **TOOLS**
 
-## Cohere’s new Aya models bring high-performance AI to over 70 languages
+## YouTube now lets anyone flag AI deepfakes of themselves
 
-Cohere released Aya, a massive multilingual project including open-weights models and datasets covering over 70 different languages. It bridges the gap for regions previously ignored by major LLMs. You can now build more inclusive applications for global users without sacrificing performance on complex reasoning or coding tasks.
+YouTube expanded its deepfake detection tool to all creators 18+. You can now request removal of AI-generated videos that simulate your face or voice—whether you're a big creator or not. YouTube reviews each request and may remove the content or restrict it depending on context like parody or public interest.
 
-*High-quality AI is finally reaching billions of people whose native languages are usually overlooked by big tech.*
+*Deepfake tools are everywhere now, so platform-level takedown rights matter for regular people, not just celebrities.*
 
-[Cohere Blog](https://cohere.com/research/aya) · May 21
+[Engadget — AI](https://www.engadget.com/2174282/youtube-likeness-detection-ai-deepfakes-expansion/) · May 17
+
+---
+
+![arXiv will ban you for a year if you submit AI-generated nonsense](edition_2/assets/variant_c_03.png)
+
+**TOOLS**
+
+## arXiv will ban you for a year if you submit AI-generated nonsense
+
+The preprint server announced it will impose 12-month submission bans on accounts that upload AI-generated papers containing hallucinated citations, fabricated data, or other machine-generated slop. The policy targets the flood of low-quality LLM output clogging scientific infrastructure.
+
+*Academic publishing's spam problem just got real consequences—expect stricter guardrails everywhere researchers share work.*
+
+[Ars Technica — AI](https://arstechnica.com/science/2026/05/preprint-server-arxiv-will-ban-submitters-of-ai-generated-hallucinations/) · May 17
 
 ---
 
 
 ---
 
-![Localize documentation for global teams](edition_1/assets/variant_c_04.png)
+![Spot AI slop in your inbox](edition_2/assets/variant_c_04.png)
 
 **☕ TRY THIS PROMPT**
 
-## Localize documentation for global teams
+## Spot AI slop in your inbox
 
 Paste this into Claude or ChatGPT.
 
 ```
-Rewrite the following [technical document or internal guide] for a colleague whose primary language is [Language]. Instead of a literal translation, replace regional metaphors and corporate jargon with culturally relevant equivalents that maintain the same professional intent. Clarify any ambiguous instructions to ensure the workflow is easy to follow across different cultural contexts. [Paste text here]
+I'm going to paste an email, article abstract, or document excerpt. Tell me: (1) likelihood it was written by AI (low / medium / high), (2) three specific tells you noticed (repetition, hedge words, generic phrasing, unnatural structure), and (3) one question I should ask the sender to verify a human wrote it.
+
+[Paste text here]
 ```
 
-Works in Claude Sonnet 4.6 or ChatGPT / GPT-5.5
+Works in Claude, ChatGPT, or Gemini—faster with Sonnet 4.6 or GPT-5.5
 
 ---
 
