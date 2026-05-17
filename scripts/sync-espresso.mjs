@@ -108,8 +108,24 @@ function sniffMetadata(html, md) {
   if (labelMatch) meta.label = `NO. ${labelMatch[1]}`;
 
   const dateMatch =
+    /(MON|TUE|WED|THU|FRI|SAT|SUN)&nbsp;(?:&middot;|·)\s*([A-Z]{3})&nbsp;(\d{1,2})&nbsp;(?:&middot;|·)\s*(\d{4})/i.exec(
+      html,
+    );
+  if (dateMatch) {
+    meta.date_human = `${dateMatch[1]} · ${dateMatch[2]} ${dateMatch[3]} · ${dateMatch[4]}`;
+  }
+  const legacyDateMatch =
     /(MON|TUE|WED|THU|FRI|SAT|SUN)&nbsp;(\d{2}\.\d{2}\.\d{2})/i.exec(html);
-  if (dateMatch) meta.date_human = `${dateMatch[1]} ${dateMatch[2]}`;
+  if (!meta.date_human && legacyDateMatch) {
+    meta.date_human = `${legacyDateMatch[1]} ${legacyDateMatch[2]}`;
+  }
+  const datelineMatch = /<p class="dateline">([^<]+)<\/p>/i.exec(html);
+  if (datelineMatch) {
+    meta.date_human = datelineMatch[1]
+      .replace(/&middot;/g, "·")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
 
   const shotsMatch = /\b(\d+)&nbsp;SHOTS\b/i.exec(html);
   if (shotsMatch) meta.shots = Number(shotsMatch[1]);
@@ -172,8 +188,31 @@ function extractRelativeAssets(html) {
   return [...found];
 }
 
-function todayISO() {
-  return new Date().toISOString().slice(0, 10);
+const MONTHS = {
+  JAN: "01",
+  FEB: "02",
+  MAR: "03",
+  APR: "04",
+  MAY: "05",
+  JUN: "06",
+  JUL: "07",
+  AUG: "08",
+  SEP: "09",
+  OCT: "10",
+  NOV: "11",
+  DEC: "12",
+};
+
+/** Parse "Thu · May 21 · 2026" (from dateline) to YYYY-MM-DD. */
+function parseEditionDateIso(dateHuman) {
+  if (!dateHuman) return null;
+  const m = /([A-Za-z]{3})\s*·\s*([A-Za-z]{3})\s+(\d{1,2})\s*·\s*(\d{4})/.exec(
+    dateHuman,
+  );
+  if (!m) return null;
+  const mon = MONTHS[m[2].toUpperCase()];
+  if (!mon) return null;
+  return `${m[4]}-${mon}-${String(m[3]).padStart(2, "0")}`;
 }
 
 async function main() {
@@ -250,7 +289,7 @@ async function main() {
   const meta = sniffMetadata(html, md);
   const number = pick.num;
   const label = meta.label ?? `NO. ${String(number).padStart(3, "0")}`;
-  const date_iso = todayISO();
+  const date_iso = parseEditionDateIso(meta.date_human) ?? new Date().toISOString().slice(0, 10);
 
   // Try to keep prior archive entries when present; prepend the new one.
   let archive = [];
