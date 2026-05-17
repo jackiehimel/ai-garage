@@ -1,18 +1,27 @@
 {
   "latest": {
-    "number": 0,
-    "label": "NO. 000",
-    "date_iso": "2026-05-12",
-    "date_human": "MON · MAY 11 · 2026",
+    "number": 1,
+    "label": "NO. 001",
+    "date_iso": "2026-05-17",
+    "date_human": "THU 21.05.26",
     "shots": 4,
-    "headline": "Rivals teamed up. Voice got smarter. And AI started running a Fortune-500 supply chain.",
+    "headline": "Anthropic lands $200 million to tackle. Cut the noise with the four. And Cohere’s new Aya models bring high-performance.",
     "html": "latest.html",
     "markdown": "latest.md",
     "variant": "c",
-    "source_repo": "jackiehimel/ai-espresso",
-    "source_path": "editions/edition_0_variant_c.html"
+    "source_repo": "jackiehimel/AI-ESPRESSO",
+    "source_path": "editions/edition_1_variant_c.html"
   },
   "archive": [
+    {
+      "number": 1,
+      "label": "NO. 001",
+      "date_iso": "2026-05-17",
+      "date_human": "THU 21.05.26",
+      "headline": "Anthropic lands $200 million to tackle. Cut the noise with the four. And Cohere’s new Aya models bring high-performance.",
+      "html": "latest.html",
+      "variant": "c"
+    },
     {
       "number": 0,
       "label": "NO. 000",

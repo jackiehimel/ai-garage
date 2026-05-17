@@ -3,7 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Espresso · Edition 0 · Variant C</title>
+<title>AI Espresso · Edition 1 · Variant C</title>
+<!-- preheader (hidden, used by manifest sniffer) -->
+<span style="display:none">Anthropic lands $200 million to tackle. Cut the noise with the four. And Cohere’s new Aya models bring high-performance.</span>
+<!-- sniffer-friendly meta tokens -->
+<meta name="ai-espresso-issue" content="NO.&nbsp;001">
+<meta name="ai-espresso-date" content="THU&nbsp;21.05.26">
+<meta name="ai-espresso-shots" content="4&nbsp;SHOTS">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   body {
@@ -18,167 +24,81 @@
   }
   .container { max-width: 1200px; margin: 0 auto; }
 
-  .masthead {
-    text-align: center;
-    padding: 12px 16px 28px 16px;
-  }
+  .masthead { text-align: center; padding: 12px 16px 28px 16px; }
   .wordmark {
-    font-size: 44px;
-    font-weight: 800;
-    letter-spacing: -0.035em;
-    margin: 0;
-    color: #1A1108;
-    line-height: 1;
+    font-size: 44px; font-weight: 800; letter-spacing: -0.035em;
+    margin: 0; color: #1A1108; line-height: 1;
   }
   .wordmark .cup { font-weight: 400; margin-left: 4px; }
   .dateline {
-    font-size: 11px;
-    font-weight: 700;
-    color: #8B6F47;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    margin: 14px 0 0 0;
+    font-size: 11px; font-weight: 700; color: #8B6F47;
+    letter-spacing: 0.22em; text-transform: uppercase; margin: 14px 0 0 0;
   }
   .hook {
-    font-size: 17px;
-    color: #5D4037;
-    margin: 18px auto 0 auto;
-    max-width: 540px;
-    line-height: 1.45;
+    font-size: 17px; color: #5D4037; margin: 18px auto 0 auto;
+    max-width: 540px; line-height: 1.45;
   }
 
   .news-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .card {
-    background-color: #FFFFFF;
-    border-radius: 16px;
-    overflow: hidden;
+    background-color: #FFFFFF; border-radius: 16px; overflow: hidden;
     box-shadow: 0 1px 2px rgba(28,17,10,0.04), 0 4px 12px rgba(28,17,10,0.05);
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
   }
-  .card-image {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    display: block;
-  }
+  .card-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
   .card-body { padding: 14px 16px 16px 16px; }
   .category {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin: 0 0 6px 0;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.18em;
+    text-transform: uppercase; margin: 0 0 6px 0;
   }
   .category.enterprise { color: #00955A; }
   .category.tools { color: #D14A0E; }
   .headline {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.22;
-    margin: 0 0 8px 0;
-    color: #1A1108;
-    letter-spacing: -0.01em;
+    font-size: 18px; font-weight: 700; line-height: 1.22;
+    margin: 0 0 8px 0; color: #1A1108; letter-spacing: -0.01em;
   }
-  .body {
-    font-size: 13.5px;
-    color: #3E2A22;
-    margin: 0 0 8px 0;
-    line-height: 1.45;
-  }
-  .body strong { color: #1A1108; }
   .kicker {
-    font-size: 13.5px;
-    color: #1A1108;
-    margin: 0 0 12px 0;
-    font-style: italic;
-    font-weight: 500;
-    line-height: 1.45;
+    font-size: 13.5px; color: #1A1108; margin: 0 0 12px 0;
+    font-style: italic; font-weight: 500; line-height: 1.45;
   }
   .source {
-    font-size: 11px;
-    color: #8B6F47;
-    letter-spacing: 0.02em;
-    margin: 0;
-    border-top: 1px solid #F0E5D1;
-    padding-top: 10px;
+    font-size: 11px; color: #8B6F47; letter-spacing: 0.02em;
+    margin: 0; border-top: 1px solid #F0E5D1; padding-top: 10px;
   }
   .source a { color: #1A1108; text-decoration: none; font-weight: 700; }
 
-  /* personality card — variant B: sticky-note / magazine-clipping treatment */
   .prompt-row { margin-top: 18px; }
   .prompt-card {
-    background-color: #FFF4D6;
-    border-radius: 18px;
-    overflow: hidden;
+    background-color: #FFF4D6; border-radius: 18px; overflow: hidden;
     box-shadow: 0 1px 2px rgba(28,17,10,0.05), 0 6px 16px rgba(28,17,10,0.08);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border: 1px dashed #C9A671;
+    display: grid; grid-template-columns: 1fr 1fr; border: 1px dashed #C9A671;
   }
-  .prompt-image {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    display: block;
-  }
+  .prompt-image { width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
   .prompt-content { padding: 24px 28px 26px 28px; color: #1A1108; }
   .prompt-tag {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.22em;
-    color: #C13B0E;
-    text-transform: uppercase;
-    margin: 0 0 10px 0;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.22em;
+    color: #C13B0E; text-transform: uppercase; margin: 0 0 10px 0;
   }
   .prompt-headline {
-    font-size: 24px;
-    font-weight: 800;
-    color: #1A1108;
-    line-height: 1.18;
-    letter-spacing: -0.015em;
-    margin: 0 0 10px 0;
+    font-size: 24px; font-weight: 800; color: #1A1108;
+    line-height: 1.18; letter-spacing: -0.015em; margin: 0 0 10px 0;
   }
-  .prompt-intro {
-    font-size: 14px;
-    color: #3E2A22;
-    margin: 0 0 14px 0;
-    line-height: 1.5;
-  }
+  .prompt-intro { font-size: 14px; color: #3E2A22; margin: 0 0 14px 0; line-height: 1.5; }
   .prompt-code {
-    background-color: #FFFFFF;
-    border: 1px solid #E8DCC8;
-    border-radius: 8px;
-    padding: 14px 16px;
-    font-family: "SF Mono", "Menlo", "Monaco", "Consolas", monospace;
-    font-size: 12.5px;
-    color: #1A1108;
-    line-height: 1.55;
+    background-color: #FFFFFF; border: 1px solid #E8DCC8; border-radius: 8px;
+    padding: 14px 16px; font-family: "SF Mono", "Menlo", "Monaco", "Consolas", monospace;
+    font-size: 12.5px; color: #1A1108; line-height: 1.55; white-space: pre-wrap;
   }
-  .prompt-tip {
-    font-size: 12px;
-    color: #6D4C41;
-    margin: 12px 0 0 0;
-    line-height: 1.5;
-  }
+  .prompt-tip { font-size: 12px; color: #6D4C41; margin: 12px 0 0 0; line-height: 1.5; }
   .prompt-tip code {
-    font-family: "SF Mono", "Menlo", monospace;
-    background-color: #FFFFFF;
-    border: 1px solid #E8DCC8;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 11px;
-    color: #1A1108;
+    font-family: "SF Mono", "Menlo", monospace; background-color: #FFFFFF;
+    border: 1px solid #E8DCC8; padding: 2px 6px; border-radius: 3px;
+    font-size: 11px; color: #1A1108;
   }
 
   .footer {
-    text-align: center;
-    padding: 28px 16px 8px 16px;
-    font-size: 11px;
-    color: #8B6F47;
-    line-height: 1.7;
-    letter-spacing: 0.04em;
+    text-align: center; padding: 28px 16px 8px 16px;
+    font-size: 11px; color: #8B6F47; line-height: 1.7; letter-spacing: 0.04em;
   }
   .footer a { color: #8B6F47; text-decoration: underline; }
 
@@ -190,7 +110,7 @@
     body { padding: 18px 12px; }
     .card-body { padding: 16px 18px 18px 18px; }
     .headline { font-size: 19px; }
-    .body, .kicker { font-size: 14.5px; }
+    .kicker { font-size: 14.5px; }
     .prompt-content { padding: 20px 22px 22px 22px; }
     .prompt-headline { font-size: 22px; }
   }
@@ -201,57 +121,55 @@
 
   <header class="masthead">
     <h1 class="wordmark">ai espresso<span class="cup">&nbsp;☕</span></h1>
-    <p class="dateline">Mon · May 11 · 2026</p>
-    <p class="hook">Rivals teamed up. Voice got smarter. And AI started running a Fortune-500 supply chain.</p>
+    <p class="dateline">Thu &middot; May 21 &middot; 2026</p>
+    <p class="hook">Anthropic lands $200 million to tackle. Cut the noise with the four. And Cohere’s new Aya models bring high-performance.</p>
   </header>
 
   <section class="news-row">
     <article class="card">
-      <img class="card-image" src="edition_0/assets/variant_b_01.png" alt="Anthropic-xAI compute deal">
+      <img class="card-image" src="edition_1/assets/variant_c_01.png" alt="Anthropic lands $200 million to tackle global health and education">
       <div class="card-body">
         <p class="category enterprise">Enterprise</p>
-        <h2 class="headline">Anthropic just rented Elon Musk's entire Colossus cluster</h2>
-        <p class="kicker"><strong>$5B/year</strong> — months after Musk was publicly trashing them.</p>
-        <p class="source"><a href="https://www.latent.space/p/ainews-anthropic-spacexais-300mw5byr">Latent Space</a> · May 7</p>
+        <h2 class="headline">Anthropic lands $200 million to tackle global health and education</h2>
+        <p class="kicker">Claude is moving from office productivity into large-scale global health and development projects.</p>
+        <p class="source"><a href="https://www.anthropic.com/news/gates-foundation-partnership">Anthropic News</a> · May 21</p>
       </div>
     </article>
-
     <article class="card">
-      <img class="card-image" src="edition_0/assets/variant_b_02.png" alt="OpenAI voice models">
+      <img class="card-image" src="edition_1/assets/variant_c_02.png" alt="Cut the noise with the four AI apps actually worth using">
       <div class="card-body">
         <p class="category tools">Tools</p>
-        <h2 class="headline">OpenAI's voice agents can think while they talk</h2>
-        <p class="kicker"><strong>Three new realtime voice models</strong> — <strong>+15.2%</strong> on Big Bench Audio.</p>
-        <p class="source"><a href="https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api">OpenAI</a> · May 7</p>
+        <h2 class="headline">Cut the noise with the four AI apps actually worth using</h2>
+        <p class="kicker">Most AI tools are hype, but these specific apps provide immediate utility for your daily professional workflow.</p>
+        <p class="source"><a href="https://kleap.co/blog/best-ai-app">kleap.co</a> · May 21</p>
       </div>
     </article>
-
     <article class="card">
-      <img class="card-image" src="edition_0/assets/variant_b_03.png" alt="DeepMind AlphaEvolve at BASF">
+      <img class="card-image" src="edition_1/assets/variant_c_03.png" alt="Cohere’s new Aya models bring high-performance AI to over 70 languages">
       <div class="card-body">
-        <p class="category enterprise">Enterprise</p>
-        <h2 class="headline">DeepMind's AlphaEvolve is running BASF's supply chain</h2>
-        <p class="kicker"><strong>180 production sites</strong> — agentic AI's first Fortune-class receipt, not a demo.</p>
-        <p class="source"><a href="https://cloud.google.com/blog/products/ai-machine-learning/how-basf-manages-thousands-of-supply-chain-decisions-with-alphaevolve/">Google Cloud</a> · May 7</p>
+        <p class="category tools">Tools</p>
+        <h2 class="headline">Cohere’s new Aya models bring high-performance AI to over 70 languages</h2>
+        <p class="kicker">High-quality AI is finally reaching billions of people whose native languages are usually overlooked by big tech.</p>
+        <p class="source"><a href="https://cohere.com/research/aya">Cohere Blog</a> · May 21</p>
       </div>
     </article>
   </section>
 
   <section class="prompt-row">
     <article class="prompt-card">
-      <img class="prompt-image" src="edition_0/assets/variant_b_04.png" alt="The adversarial code reviewer">
+      <img class="prompt-image" src="edition_1/assets/variant_c_04.png" alt="Localize documentation for global teams">
       <div class="prompt-content">
         <p class="prompt-tag">☕ &nbsp;Try this prompt</p>
-        <h2 class="prompt-headline">The adversarial code reviewer</h2>
-        <p class="prompt-intro">Paste a PR diff into Claude or ChatGPT with this. No diplomatic softening.</p>
-        <div class="prompt-code">You're a senior staff engineer reviewing this PR. Be the toughest reviewer on the team — find every bug, race, edge case, security issue, and architectural mistake. No softening. Cite the line for each finding. End with a verdict: Approve, Request Changes, or Reject.</div>
-        <p class="prompt-tip">Best on diffs &lt;500 lines. Pair with <code>git diff main...HEAD | pbcopy</code>.</p>
+        <h2 class="prompt-headline">Localize documentation for global teams</h2>
+        <p class="prompt-intro">Paste this into Claude or ChatGPT.</p>
+        <div class="prompt-code">Rewrite the following [technical document or internal guide] for a colleague whose primary language is [Language]. Instead of a literal translation, replace regional metaphors and corporate jargon with culturally relevant equivalents that maintain the same professional intent. Clarify any ambiguous instructions to ensure the workflow is easy to follow across different cultural contexts. [Paste text here]</div>
+        <p class="prompt-tip">Works in Claude Sonnet 4.6 or ChatGPT / GPT-5.5</p>
       </div>
     </article>
   </section>
 
   <footer class="footer">
-    brewed by ai espresso · <a href="mailto:jacqueline.himel@vanderbilt.edu?subject=AI%20Espresso%20issue%20report">spot something off?</a> · <a href="https://github.com/jackiehimel/ai-espresso/blob/main/feeds.json">source allowlist</a>
+    brewed by ai espresso · <a href="mailto:jacqueline.himel@vanderbilt.edu?subject=AI%20Espresso%20issue%20report">spot something off?</a> · <a href="https://github.com/jackiehimel/ai-espresso">repo</a>
   </footer>
 
 </div>

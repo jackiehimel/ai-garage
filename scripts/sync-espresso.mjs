@@ -289,7 +289,7 @@ async function main() {
       html: "latest.html",
       markdown: "latest.md",
       variant: pick.variant,
-      source_repo: "jackiehimel/ai-espresso",
+      source_repo: "jackiehimel/AI-ESPRESSO",
       source_path: path.relative(sourceRoot, pick.htmlPath),
     },
     archive: dedup,

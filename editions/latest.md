@@ -1,70 +1,70 @@
-# ai espresso ☕ — Edition 0 · Variant C (Newspaper Comic · Snackable)
+# ai espresso ☕ — Edition 1 · Variant C (Newspaper Comic · Snackable)
 
-**MON · MAY 11 · 2026**
+**THU · MAY 21 · 2026**
 
-*Rivals teamed up. Voice got smarter. And AI started running a Fortune-500 supply chain.*
+*Anthropic lands $200 million to tackle. Cut the noise with the four. And Cohere’s new Aya models bring high-performance.*
 
 ---
 
-![Anthropic-xAI compute deal — editorial cartoon of two small businessmen shaking hands dwarfed by a wall of server racks](edition_0/assets/variant_b_01.png)
+![Anthropic lands $200 million to tackle global health and education](edition_1/assets/variant_c_01.png)
 
 **ENTERPRISE**
 
-## Anthropic just rented Elon Musk's entire Colossus cluster
+## Anthropic lands $200 million to tackle global health and education
 
-Anthropic signed an estimated **$5B/year deal** to rent xAI's full 300MW Colossus cluster.
+Anthropic is teaming up with the Gates Foundation to build AI tools for public health and farming in lower-income countries. The $200 million fund supports researchers using Claude to improve disease tracking and crop yields, moving AI beyond Silicon Valley to address urgent humanitarian needs.
 
-*Six months ago Musk was trashing Anthropic publicly — now he's their landlord.*
+*Claude is moving from office productivity into large-scale global health and development projects.*
 
-[Latent Space](https://www.latent.space/p/ainews-anthropic-spacexais-300mw5byr) · May 7
+[Anthropic News](https://www.anthropic.com/news/gates-foundation-partnership) · May 21
 
 ---
 
-![OpenAI voice models — editorial cartoon of a woman at a podium with three thought bubbles above her head](edition_0/assets/variant_b_02.png)
+![Cut the noise with the four AI apps actually worth using](edition_1/assets/variant_c_02.png)
 
 **TOOLS**
 
-## OpenAI's voice agents can think while they talk
+## Cut the noise with the four AI apps actually worth using
 
-OpenAI shipped **three new realtime voice models** that reason, translate, and transcribe at once — **+15.2%** on Big Bench Audio.
+Stop scrolling through generic lists and start using the tools that actually change how you work. Whether you're using research assistants to browse the live web or creative engines to turn sketches into prototypes, these apps represent the current gold standard for professional AI utility.
 
-*Voice agents have been stuck on "transcribe-then-respond" since GPT-4o; they can finally think mid-sentence.*
+*Most AI tools are hype, but these specific apps provide immediate utility for your daily professional workflow.*
 
-[OpenAI](https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api) · May 7 · also [Latent Space](https://www.latent.space/p/ainews-gpt-realtime-2-translate-and)
-
----
-
-![DeepMind AlphaEvolve at BASF — editorial cartoon of a scientist conducting a marching line of factories trucks and crops](edition_0/assets/variant_b_03.png)
-
-**ENTERPRISE**
-
-## DeepMind's AlphaEvolve is running BASF's supply chain
-
-A Gemini-powered agent is now running supply chain calls across BASF's **180 production sites** — same agent that designed circuits in Google's next-gen TPUs.
-
-*"Agentic AI in production" finally has a Fortune-class receipt, not a demo.*
-
-[Google Cloud](https://cloud.google.com/blog/products/ai-machine-learning/how-basf-manages-thousands-of-supply-chain-decisions-with-alphaevolve/) · May 7 · also [DeepMind](https://deepmind.google/blog/alphaevolve-impact/)
+[kleap.co](https://kleap.co/blog/best-ai-app) · May 21
 
 ---
 
-![The adversarial code reviewer — editorial cartoon of an editor at a cafe table peering through a magnifying glass at a paper covered in red marks](edition_0/assets/variant_b_04.png)
+![Cohere’s new Aya models bring high-performance AI to over 70 languages](edition_1/assets/variant_c_03.png)
+
+**TOOLS**
+
+## Cohere’s new Aya models bring high-performance AI to over 70 languages
+
+Cohere released Aya, a massive multilingual project including open-weights models and datasets covering over 70 different languages. It bridges the gap for regions previously ignored by major LLMs. You can now build more inclusive applications for global users without sacrificing performance on complex reasoning or coding tasks.
+
+*High-quality AI is finally reaching billions of people whose native languages are usually overlooked by big tech.*
+
+[Cohere Blog](https://cohere.com/research/aya) · May 21
+
+---
+
+
+---
+
+![Localize documentation for global teams](edition_1/assets/variant_c_04.png)
 
 **☕ TRY THIS PROMPT**
 
-## The adversarial code reviewer
+## Localize documentation for global teams
 
-Paste a PR diff into Claude or ChatGPT with this. No diplomatic softening.
+Paste this into Claude or ChatGPT.
 
 ```
-You're a senior staff engineer reviewing this PR. Be the toughest
-reviewer on the team — find every bug, race, edge case, security
-issue, and architectural mistake. No softening. Cite the line for
-each finding. End with a verdict: Approve, Request Changes, or Reject.
+Rewrite the following [technical document or internal guide] for a colleague whose primary language is [Language]. Instead of a literal translation, replace regional metaphors and corporate jargon with culturally relevant equivalents that maintain the same professional intent. Clarify any ambiguous instructions to ensure the workflow is easy to follow across different cultural contexts. [Paste text here]
 ```
 
-Best on diffs <500 lines. Pair with `git diff main...HEAD | pbcopy`.
+Works in Claude Sonnet 4.6 or ChatGPT / GPT-5.5
 
 ---
 
-*brewed by ai espresso · [spot something off?](mailto:jacqueline.himel@vanderbilt.edu?subject=AI%20Espresso%20issue%20report) · [source allowlist](https://github.com/jackiehimel/ai-espresso/blob/main/feeds.json)*
+*brewed by ai espresso · [spot something off?](mailto:jacqueline.himel@vanderbilt.edu?subject=AI%20Espresso%20issue%20report) · [repo](https://github.com/jackiehimel/ai-espresso)*

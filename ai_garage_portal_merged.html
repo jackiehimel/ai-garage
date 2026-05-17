@@ -1641,7 +1641,7 @@
     <!-- AI ESPRESSO -->
     <!--
       The current digest is embedded live from editions/latest.html.
-      That file is vendored from the ai-espresso repo (jackiehimel/ai-espresso)
+      That file is vendored from AI-ESPRESSO (jackiehimel/AI-ESPRESSO)
       and refreshed by running `npm run sync:espresso`. See README.md for the
       refresh workflow. The metadata block below is populated at sync time from
       editions/manifest.json; when served over HTTP it self-updates via fetch.
@@ -1679,7 +1679,7 @@
         <div class="espresso-actions">
           <a href="editions/latest.html" target="_blank" rel="noopener">Open edition in a new tab ↗</a>
           <a href="editions/latest.md" target="_blank" rel="noopener">View as Markdown</a>
-          <a href="https://github.com/jackiehimel/ai-espresso" target="_blank" rel="noopener">Source on GitHub</a>
+          <a href="https://github.com/jackiehimel/AI-ESPRESSO" target="_blank" rel="noopener">Source on GitHub</a>
         </div>
 
         <h2>What it is</h2>
@@ -1705,7 +1705,7 @@
           </tbody>
         </table>
 
-        <div class="meta" data-espresso-updated>Last updated 12 May 2026 · Vendored from jackiehimel/ai-espresso · Refresh with <code>npm run sync:espresso</code></div>
+        <div class="meta" data-espresso-updated>Last updated 12 May 2026 · Vendored from jackiehimel/AI-ESPRESSO · Refresh with <code>npm run sync:espresso</code></div>
       </div>
     </section>
 
@@ -1985,7 +1985,7 @@
       const updatedEl = document.querySelector('[data-espresso-updated]');
       if (updatedEl && latest.date_iso) {
         updatedEl.innerHTML =
-          `Last synced ${latest.date_iso} · Vendored from ${latest.source_repo || 'jackiehimel/ai-espresso'} · Refresh with <code>npm run sync:espresso</code>`;
+          `Last synced ${latest.date_iso} · Vendored from ${latest.source_repo || 'jackiehimel/AI-ESPRESSO'} · Refresh with <code>npm run sync:espresso</code>`;
       }
 
       const archive = Array.isArray(manifest.archive) ? manifest.archive : [];
