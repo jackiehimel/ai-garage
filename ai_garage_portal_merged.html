@@ -1696,11 +1696,8 @@
             <tr><th>Issue</th><th>Date</th><th>Headline</th><th></th></tr>
           </thead>
           <tbody>
-            <tr>
-              <td>NO. 000</td>
-              <td>Mon May 11, 2026</td>
-              <td>Anthropic rents Colossus, OpenAI voice thinks mid-sentence, AlphaEvolve at BASF.</td>
-              <td><a href="editions/latest.html" target="_blank" rel="noopener">Read →</a></td>
+            <tr class="espresso-archive-empty">
+              <td colspan="4">Past issues appear here after sync — each links to its own frozen edition file.</td>
             </tr>
           </tbody>
         </table>
@@ -1990,16 +1987,23 @@
 
       const archive = Array.isArray(manifest.archive) ? manifest.archive : [];
       const tbody = document.querySelector('[data-espresso-archive] tbody');
-      if (tbody && archive.length) {
-        tbody.innerHTML = archive
-          .map((entry) => {
-            const href = entry.html || 'latest.html';
-            const date = entry.date_human || entry.date_iso || '';
-            const headline = entry.headline || '';
-            const label = entry.label || `NO. ${String(entry.number ?? 0).padStart(3, '0')}`;
-            return `<tr><td>${label}</td><td>${date}</td><td>${headline}</td><td><a href="editions/${href}" target="_blank" rel="noopener">Read →</a></td></tr>`;
-          })
-          .join('');
+      if (tbody) {
+        if (archive.length) {
+          tbody.innerHTML = archive
+            .map((entry) => {
+              const href = entry.html || `edition_${entry.number}_variant_c.html`;
+              if (href === 'latest.html') return '';
+              const date = entry.date_human || entry.date_iso || '';
+              const headline = entry.headline || '';
+              const label = entry.label || `NO. ${String(entry.number ?? 0).padStart(3, '0')}`;
+              return `<tr><td>${label}</td><td>${date}</td><td>${headline}</td><td><a href="editions/${href}" target="_blank" rel="noopener">Read →</a></td></tr>`;
+            })
+            .filter(Boolean)
+            .join('');
+        } else {
+          tbody.innerHTML =
+            '<tr><td colspan="4">No past issues yet — older editions appear here after sync.</td></tr>';
+        }
       }
     } catch {
       // file:// or missing manifest: keep static markup

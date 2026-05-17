@@ -13,11 +13,11 @@
 //   1. Picks the highest-numbered editions/edition_N.{html,md} in ai-espresso
 //      (falls back to edition_0 if that's all that exists). When --variant is
 //      passed, matches edition_N_variant_<name>.{html,md} instead.
-//   2. Copies them to garage/editions/latest.html and latest.md.
-//   3. For variants that reference relative image assets (e.g. edition_0/
-//      assets/variant_b_01.png), copies those assets into the same relative
-//      path under garage/editions/ so the portal iframe can resolve them.
-//   4. Updates editions/manifest.json so the portal can show issue metadata.
+//   2. Mirrors every edition_N_variant_<X>.{html,md} into garage/editions/
+//      (frozen per-issue files, not only latest.html).
+//   3. Copies latest.html / latest.md from the highest issue number.
+//   4. Vendors relative image assets beside each edition HTML.
+//   5. Updates editions/manifest.json — archive rows link to frozen HTML paths.
 //
 // Usage:
 //   node scripts/sync-espresso.mjs
@@ -94,6 +94,102 @@ async function pickLatestEdition(sourceEditions, variant) {
     }
   }
   return null;
+}
+
+async function listAllVariantEditions(sourceEditions, variant) {
+  const entries = await fs.readdir(sourceEditions, { withFileTypes: true });
+  const pattern = new RegExp(`^edition_(\\d+)_variant_${variant}\\.html$`);
+  const candidates = entries
+    .filter((e) => e.isFile() && pattern.test(e.name))
+    .map((e) => {
+      const m = pattern.exec(e.name);
+      const num = Number(m[1]);
+      const base = `edition_${m[1]}_variant_${variant}`;
+      return { num, base, variant };
+    })
+    .sort((a, b) => a.num - b.num);
+
+  const picks = [];
+  for (const c of candidates) {
+    const htmlPath = path.join(sourceEditions, `${c.base}.html`);
+    const mdPath = path.join(sourceEditions, `${c.base}.md`);
+    try {
+      await fs.access(htmlPath);
+      await fs.access(mdPath);
+      picks.push({ ...c, htmlPath, mdPath });
+    } catch {
+      // skip incomplete pairs
+    }
+  }
+  return picks;
+}
+
+async function copyAssetsForHtml(html, sourceHtmlDir) {
+  const assetRefs = extractRelativeAssets(html);
+  const copiedAssets = [];
+  const missingAssets = [];
+  for (const rel of assetRefs) {
+    const src = path.resolve(sourceHtmlDir, rel);
+    const dest = path.resolve(EDITIONS_DIR, rel);
+    if (!dest.startsWith(EDITIONS_DIR + path.sep)) continue;
+    try {
+      await fs.access(src);
+    } catch {
+      missingAssets.push(rel);
+      continue;
+    }
+    await fs.mkdir(path.dirname(dest), { recursive: true });
+    await fs.copyFile(src, dest);
+    copiedAssets.push(rel);
+  }
+  return { copiedAssets, missingAssets };
+}
+
+async function writeFrozenEdition(pick) {
+  const html = await fs.readFile(pick.htmlPath, "utf8");
+  const md = await fs.readFile(pick.mdPath, "utf8");
+  const frozenHtml = `${pick.base}.html`;
+  const frozenMd = `${pick.base}.md`;
+  await fs.writeFile(path.join(EDITIONS_DIR, frozenHtml), html);
+  await fs.writeFile(path.join(EDITIONS_DIR, frozenMd), md);
+  const sourceHtmlDir = path.dirname(pick.htmlPath);
+  const assets = await copyAssetsForHtml(html, sourceHtmlDir);
+  return { frozenHtml, frozenMd, ...assets };
+}
+
+async function buildArchiveFromDisk(latestNumber, variant) {
+  const entries = await fs.readdir(EDITIONS_DIR, { withFileTypes: true });
+  const pattern = new RegExp(`^edition_(\\d+)_variant_${variant}\\.html$`);
+  const archive = [];
+  for (const e of entries) {
+    if (!e.isFile()) continue;
+    const m = pattern.exec(e.name);
+    if (!m) continue;
+    const number = Number(m[1]);
+    if (number === latestNumber) continue;
+    const htmlPath = path.join(EDITIONS_DIR, e.name);
+    const mdPath = path.join(EDITIONS_DIR, e.name.replace(/\.html$/, ".md"));
+    let md = "";
+    try {
+      md = await fs.readFile(mdPath, "utf8");
+    } catch {
+      continue;
+    }
+    const html = await fs.readFile(htmlPath, "utf8");
+    const meta = sniffMetadata(html, md);
+    archive.push({
+      number,
+      label: meta.label ?? `NO. ${String(number).padStart(3, "0")}`,
+      date_iso: parseEditionDateIso(meta.date_human) ?? null,
+      date_human: meta.date_human,
+      headline: meta.headline,
+      html: e.name,
+      markdown: e.name.replace(/\.html$/, ".md"),
+      variant,
+    });
+  }
+  archive.sort((a, b) => b.number - a.number);
+  return archive;
 }
 
 // Best-effort metadata sniffer. Looks for the preheader/header strings the
@@ -257,65 +353,35 @@ async function main() {
 
   await fs.mkdir(EDITIONS_DIR, { recursive: true });
 
+  const variant = pick.variant ?? opts.variant ?? "c";
+  const allPicks =
+    variant && !opts.edition
+      ? await listAllVariantEditions(sourceEditions, variant)
+      : [pick];
+
+  let copiedAssets = [];
+  let missingAssets = [];
+  for (const p of allPicks) {
+    const assets = await writeFrozenEdition(p);
+    copiedAssets = [...copiedAssets, ...assets.copiedAssets];
+    missingAssets = [...missingAssets, ...assets.missingAssets];
+  }
+
   const html = await fs.readFile(pick.htmlPath, "utf8");
   const md = await fs.readFile(pick.mdPath, "utf8");
   await fs.writeFile(path.join(EDITIONS_DIR, "latest.html"), html);
   await fs.writeFile(path.join(EDITIONS_DIR, "latest.md"), md);
 
-  // Vendor any relative assets the edition references (variants embed image
-  // panels via paths like "edition_0/assets/variant_b_01.png"). Resolve those
-  // against the source HTML's directory and copy to the same relative path
-  // under garage/editions/ so the portal iframe can fetch them.
-  const sourceHtmlDir = path.dirname(pick.htmlPath);
-  const assetRefs = extractRelativeAssets(html);
-  const copiedAssets = [];
-  const missingAssets = [];
-  for (const rel of assetRefs) {
-    const src = path.resolve(sourceHtmlDir, rel);
-    const dest = path.resolve(EDITIONS_DIR, rel);
-    // Safety: dest must stay inside EDITIONS_DIR.
-    if (!dest.startsWith(EDITIONS_DIR + path.sep)) continue;
-    try {
-      await fs.access(src);
-    } catch {
-      missingAssets.push(rel);
-      continue;
-    }
-    await fs.mkdir(path.dirname(dest), { recursive: true });
-    await fs.copyFile(src, dest);
-    copiedAssets.push(rel);
-  }
-
   const meta = sniffMetadata(html, md);
   const number = pick.num;
   const label = meta.label ?? `NO. ${String(number).padStart(3, "0")}`;
   const date_iso = parseEditionDateIso(meta.date_human) ?? new Date().toISOString().slice(0, 10);
+  const frozenHtml = `${pick.base}.html`;
 
-  // Try to keep prior archive entries when present; prepend the new one.
-  let archive = [];
-  try {
-    const prev = JSON.parse(
-      await fs.readFile(path.join(EDITIONS_DIR, "manifest.json"), "utf8"),
-    );
-    archive = Array.isArray(prev.archive) ? prev.archive : [];
-  } catch {
-    // first run — start a fresh archive
-  }
-
-  const newEntry = {
-    number,
-    label,
-    date_iso,
-    date_human: meta.date_human,
-    headline: meta.headline,
-    html: "latest.html",
-    variant: pick.variant,
-  };
-
-  // De-dup: if an entry with the same `number` already exists, replace it.
-  // (A new variant supersedes whatever was previously synced for that issue.)
-  const dedup = archive.filter((e) => e.number !== number);
-  dedup.unshift(newEntry);
+  // Archive = other frozen editions on disk (each with its own html path).
+  const archive = variant
+    ? await buildArchiveFromDisk(number, variant)
+    : [];
 
   const manifest = {
     latest: {
@@ -327,11 +393,12 @@ async function main() {
       headline: meta.headline,
       html: "latest.html",
       markdown: "latest.md",
+      frozen_html: frozenHtml,
       variant: pick.variant,
       source_repo: "jackiehimel/AI-ESPRESSO",
       source_path: path.relative(sourceRoot, pick.htmlPath),
     },
-    archive: dedup,
+    archive,
   };
 
   await fs.writeFile(
