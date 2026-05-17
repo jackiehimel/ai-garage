@@ -49,7 +49,7 @@ Override with `--source /absolute/path/to/AI-ESPRESSO`. Optional flags: `--editi
 
 1. **Repo settings:** **Actions** → **General** → *Workflow permissions* → allow **Read and write** so the workflow can push commits.
 2. **Which repo to clone:** set a repository variable `AI_ESPRESSO_REPOSITORY` (e.g. `jackiehimel/AI-ESPRESSO`). If unset, the workflow defaults to `jackiehimel/AI-ESPRESSO`.
-3. **Private digest repo:** create a fine-grained PAT with read access to that repo only. Store it as secret `AI_ESPRESSO_CLONE_TOKEN`. Public repos do not need this secret.
+3. **Private digest repo (required for `jackiehimel/AI-ESPRESSO`):** create a fine-grained PAT with read access to that repo only. Store it as secret `AI_ESPRESSO_CLONE_TOKEN` on this repo. Without it, the clone step fails.
 
 ## Optional screenshot helper
 
