@@ -8,7 +8,7 @@
 <span style="display:none">Musk vs. Altman jury trial wraps. YouTube now lets anyone flag AI. And arxiv will ban you.</span>
 <!-- sniffer-friendly meta tokens -->
 <meta name="ai-espresso-issue" content="NO.&nbsp;002">
-<meta name="ai-espresso-date" content="SUN&nbsp;17.05.26">
+<meta name="ai-espresso-date" content="SAT&nbsp;&middot;&nbsp;MAY&nbsp;16&nbsp;&middot;&nbsp;2026">
 <meta name="ai-espresso-shots" content="4&nbsp;SHOTS">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
@@ -39,7 +39,16 @@
     max-width: 540px; line-height: 1.45;
   }
 
-  .news-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .news-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  /* Three story cards: 2 on top, third spans full width below */
+  .news-row .card:nth-child(3):last-child {
+    grid-column: 1 / -1;
+    max-width: calc(50% - 8px);
+  }
   .card {
     background-color: #FFFFFF; border-radius: 16px; overflow: hidden;
     box-shadow: 0 1px 2px rgba(28,17,10,0.04), 0 4px 12px rgba(28,17,10,0.05);
@@ -102,8 +111,9 @@
   }
   .footer a { color: #8B6F47; text-decoration: underline; }
 
-  @media (max-width: 760px) {
+  @media (max-width: 520px) {
     .news-row { grid-template-columns: 1fr; gap: 14px; }
+    .news-row .card:nth-child(3):last-child { max-width: none; grid-column: auto; }
     .prompt-card { grid-template-columns: 1fr; }
     .wordmark { font-size: 36px; }
     .hook { font-size: 15.5px; }
@@ -121,7 +131,7 @@
 
   <header class="masthead">
     <h1 class="wordmark">ai espresso<span class="cup">&nbsp;☕</span></h1>
-    <p class="dateline">Sun &middot; May 17 &middot; 2026</p>
+    <p class="dateline">Sat &middot; May 16 &middot; 2026</p>
     <p class="hook">Musk vs. Altman jury trial wraps. YouTube now lets anyone flag AI. And arxiv will ban you.</p>
   </header>
 
@@ -132,7 +142,7 @@
         <p class="category tools">Tools</p>
         <h2 class="headline">Musk vs. Altman jury trial wraps closing arguments today</h2>
         <p class="kicker">A jury verdict could reshape how AI labs structure themselves and what &#x27;open&#x27; actually means in OpenAI&#x27;s name.</p>
-        <p class="source"><a href="https://www.nytimes.com/2026/05/14/technology/openai-trial-elon-musk-sam-altman.html">NYT — Technology</a> · May 17</p>
+        <p class="source"><a href="https://www.nytimes.com/2026/05/14/technology/openai-trial-elon-musk-sam-altman.html">NYT — Technology</a> · May 16</p>
       </div>
     </article>
     <article class="card">
@@ -141,7 +151,7 @@
         <p class="category tools">Tools</p>
         <h2 class="headline">YouTube now lets anyone flag AI deepfakes of themselves</h2>
         <p class="kicker">Deepfake tools are everywhere now, so platform-level takedown rights matter for regular people, not just celebrities.</p>
-        <p class="source"><a href="https://www.engadget.com/2174282/youtube-likeness-detection-ai-deepfakes-expansion/">Engadget — AI</a> · May 17</p>
+        <p class="source"><a href="https://www.engadget.com/2174282/youtube-likeness-detection-ai-deepfakes-expansion/">Engadget — AI</a> · May 16</p>
       </div>
     </article>
     <article class="card">
@@ -150,7 +160,7 @@
         <p class="category tools">Tools</p>
         <h2 class="headline">arXiv will ban you for a year if you submit AI-generated nonsense</h2>
         <p class="kicker">Academic publishing&#x27;s spam problem just got real consequences—expect stricter guardrails everywhere researchers share work.</p>
-        <p class="source"><a href="https://arstechnica.com/science/2026/05/preprint-server-arxiv-will-ban-submitters-of-ai-generated-hallucinations/">Ars Technica — AI</a> · May 17</p>
+        <p class="source"><a href="https://arstechnica.com/science/2026/05/preprint-server-arxiv-will-ban-submitters-of-ai-generated-hallucinations/">Ars Technica — AI</a> · May 16</p>
       </div>
     </article>
   </section>

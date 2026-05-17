@@ -2,8 +2,8 @@
   "latest": {
     "number": 2,
     "label": "NO. 002",
-    "date_iso": "2026-05-17",
-    "date_human": "SUN 17.05.26",
+    "date_iso": "2026-05-16",
+    "date_human": "Sat · May 16 · 2026",
     "shots": 4,
     "headline": "Musk vs. Altman jury trial wraps. YouTube now lets anyone flag AI. And arxiv will ban you.",
     "html": "latest.html",
@@ -16,8 +16,8 @@
     {
       "number": 2,
       "label": "NO. 002",
-      "date_iso": "2026-05-17",
-      "date_human": "SUN 17.05.26",
+      "date_iso": "2026-05-16",
+      "date_human": "Sat · May 16 · 2026",
       "headline": "Musk vs. Altman jury trial wraps. YouTube now lets anyone flag AI. And arxiv will ban you.",
       "html": "latest.html",
       "variant": "c"

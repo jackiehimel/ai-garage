@@ -1,6 +1,6 @@
 # ai espresso ☕ — Edition 2 · Variant C (Newspaper Comic · Snackable)
 
-**SUN · MAY 17 · 2026**
+**SAT · MAY 16 · 2026**
 
 *Musk vs. Altman jury trial wraps. YouTube now lets anyone flag AI. And arxiv will ban you.*
 
@@ -16,7 +16,7 @@ The lawsuit alleging OpenAI broke its nonprofit mission by partnering with Micro
 
 *A jury verdict could reshape how AI labs structure themselves and what 'open' actually means in OpenAI's name.*
 
-[NYT — Technology](https://www.nytimes.com/2026/05/14/technology/openai-trial-elon-musk-sam-altman.html) · May 17
+[NYT — Technology](https://www.nytimes.com/2026/05/14/technology/openai-trial-elon-musk-sam-altman.html) · May 16
 
 ---
 
@@ -30,7 +30,7 @@ YouTube expanded its deepfake detection tool to all creators 18+. You can now re
 
 *Deepfake tools are everywhere now, so platform-level takedown rights matter for regular people, not just celebrities.*
 
-[Engadget — AI](https://www.engadget.com/2174282/youtube-likeness-detection-ai-deepfakes-expansion/) · May 17
+[Engadget — AI](https://www.engadget.com/2174282/youtube-likeness-detection-ai-deepfakes-expansion/) · May 16
 
 ---
 
@@ -44,7 +44,7 @@ The preprint server announced it will impose 12-month submission bans on account
 
 *Academic publishing's spam problem just got real consequences—expect stricter guardrails everywhere researchers share work.*
 
-[Ars Technica — AI](https://arstechnica.com/science/2026/05/preprint-server-arxiv-will-ban-submitters-of-ai-generated-hallucinations/) · May 17
+[Ars Technica — AI](https://arstechnica.com/science/2026/05/preprint-server-arxiv-will-ban-submitters-of-ai-generated-hallucinations/) · May 16
 
 ---
 
