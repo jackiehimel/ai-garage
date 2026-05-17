@@ -39,15 +39,10 @@
     max-width: 540px; line-height: 1.45;
   }
 
-  .news-row {
+  .edition-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-  }
-  /* Three story cards: 2 on top, third spans full width below */
-  .news-row .card:nth-child(3):last-child {
-    grid-column: 1 / -1;
-    max-width: calc(50% - 8px);
   }
   .card {
     background-color: #FFFFFF; border-radius: 16px; overflow: hidden;
@@ -76,29 +71,23 @@
   }
   .source a { color: #1A1108; text-decoration: none; font-weight: 700; }
 
-  .prompt-row { margin-top: 18px; }
   .prompt-card {
-    background-color: #FFF4D6; border-radius: 18px; overflow: hidden;
+    background-color: #FFF4D6;
+    border: 1px dashed #C9A671;
     box-shadow: 0 1px 2px rgba(28,17,10,0.05), 0 6px 16px rgba(28,17,10,0.08);
-    display: grid; grid-template-columns: 1fr 1fr; border: 1px dashed #C9A671;
   }
-  .prompt-image { width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
-  .prompt-content { padding: 24px 28px 26px 28px; color: #1A1108; }
+  .prompt-card .card-image { aspect-ratio: 1 / 1; }
   .prompt-tag {
     font-size: 10px; font-weight: 800; letter-spacing: 0.22em;
     color: #C13B0E; text-transform: uppercase; margin: 0 0 10px 0;
   }
-  .prompt-headline {
-    font-size: 24px; font-weight: 800; color: #1A1108;
-    line-height: 1.18; letter-spacing: -0.015em; margin: 0 0 10px 0;
-  }
-  .prompt-intro { font-size: 14px; color: #3E2A22; margin: 0 0 14px 0; line-height: 1.5; }
   .prompt-code {
     background-color: #FFFFFF; border: 1px solid #E8DCC8; border-radius: 8px;
-    padding: 14px 16px; font-family: "SF Mono", "Menlo", "Monaco", "Consolas", monospace;
-    font-size: 12.5px; color: #1A1108; line-height: 1.55; white-space: pre-wrap;
+    padding: 12px 14px; font-family: "SF Mono", "Menlo", "Monaco", "Consolas", monospace;
+    font-size: 11.5px; color: #1A1108; line-height: 1.5; white-space: pre-wrap;
+    flex: 1; min-height: 0;
   }
-  .prompt-tip { font-size: 12px; color: #6D4C41; margin: 12px 0 0 0; line-height: 1.5; }
+  .prompt-tip { font-size: 11px; color: #6D4C41; margin: 10px 0 0 0; line-height: 1.45; }
   .prompt-tip code {
     font-family: "SF Mono", "Menlo", monospace; background-color: #FFFFFF;
     border: 1px solid #E8DCC8; padding: 2px 6px; border-radius: 3px;
@@ -112,17 +101,14 @@
   .footer a { color: #8B6F47; text-decoration: underline; }
 
   @media (max-width: 520px) {
-    .news-row { grid-template-columns: 1fr; gap: 14px; }
-    .news-row .card:nth-child(3):last-child { max-width: none; grid-column: auto; }
-    .prompt-card { grid-template-columns: 1fr; }
+    .edition-grid { grid-template-columns: 1fr; gap: 14px; }
     .wordmark { font-size: 36px; }
     .hook { font-size: 15.5px; }
     body { padding: 18px 12px; }
     .card-body { padding: 16px 18px 18px 18px; }
     .headline { font-size: 19px; }
     .kicker { font-size: 14.5px; }
-    .prompt-content { padding: 20px 22px 22px 22px; }
-    .prompt-headline { font-size: 22px; }
+    .prompt-code { font-size: 12px; }
   }
 </style>
 </head>
@@ -135,7 +121,7 @@
     <p class="hook">Musk vs. Altman jury trial wraps. YouTube now lets anyone flag AI. And arxiv will ban you.</p>
   </header>
 
-  <section class="news-row">
+  <section class="edition-grid">
     <article class="card">
       <img class="card-image" src="edition_2/assets/variant_c_01.png" alt="Musk vs. Altman jury trial wraps closing arguments today">
       <div class="card-body">
@@ -163,19 +149,21 @@
         <p class="source"><a href="https://arstechnica.com/science/2026/05/preprint-server-arxiv-will-ban-submitters-of-ai-generated-hallucinations/">Ars Technica — AI</a> · May 16</p>
       </div>
     </article>
-  </section>
+    <article class="card prompt-card">
+      <img class="card-image" src="edition_2/assets/variant_c_04.png" alt="Try this prompt">
+      <div class="card-body">
+        <p class="prompt-tag">☕ Try this prompt</p>
+        <div class="prompt-code">You are the editor who has to approve this before it ships. Read the draft below and reply in exactly three sections:
 
-  <section class="prompt-row">
-    <article class="prompt-card">
-      <img class="prompt-image" src="edition_2/assets/variant_c_04.png" alt="Spot AI slop in your inbox">
-      <div class="prompt-content">
-        <p class="prompt-tag">☕ &nbsp;Try this prompt</p>
-        <h2 class="prompt-headline">Spot AI slop in your inbox</h2>
-        <p class="prompt-intro">Paste this into Claude or ChatGPT.</p>
-        <div class="prompt-code">I&#x27;m going to paste an email, article abstract, or document excerpt. Tell me: (1) likelihood it was written by AI (low / medium / high), (2) three specific tells you noticed (repetition, hedge words, generic phrasing, unnatural structure), and (3) one question I should ask the sender to verify a human wrote it.
+**Slop scan** — three specific red flags (fake precision, citation-shaped gaps, list rhythm, hedging). Quote the line each time.
 
-[Paste text here]</div>
-        <p class="prompt-tip">Works in Claude, ChatGPT, or Gemini—faster with Sonnet 4.6 or GPT-5.5</p>
+**Prove-it question** — one question only the real author could answer in 30 seconds (a decision, a name, a number that is not in the text).
+
+**Verdict** — one line: send as-is / fix these two things / do not send.
+
+Draft:
+[paste email, abstract, or memo here]</div>
+        <p class="prompt-tip">Works in Claude, ChatGPT, or Gemini.</p>
       </div>
     </article>
   </section>

@@ -51,21 +51,24 @@ The preprint server announced it will impose 12-month submission bans on account
 
 ---
 
-![Spot AI slop in your inbox](edition_2/assets/variant_c_04.png)
+![Try this prompt](edition_2/assets/variant_c_04.png)
 
-**☕ TRY THIS PROMPT**
-
-## Spot AI slop in your inbox
-
-Paste this into Claude or ChatGPT.
+**☕ Try this prompt**
 
 ```
-I'm going to paste an email, article abstract, or document excerpt. Tell me: (1) likelihood it was written by AI (low / medium / high), (2) three specific tells you noticed (repetition, hedge words, generic phrasing, unnatural structure), and (3) one question I should ask the sender to verify a human wrote it.
+You are the editor who has to approve this before it ships. Read the draft below and reply in exactly three sections:
 
-[Paste text here]
+**Slop scan** — three specific red flags (fake precision, citation-shaped gaps, list rhythm, hedging). Quote the line each time.
+
+**Prove-it question** — one question only the real author could answer in 30 seconds (a decision, a name, a number that is not in the text).
+
+**Verdict** — one line: send as-is / fix these two things / do not send.
+
+Draft:
+[paste email, abstract, or memo here]
 ```
 
-Works in Claude, ChatGPT, or Gemini—faster with Sonnet 4.6 or GPT-5.5
+Works in Claude, ChatGPT, or Gemini.
 
 ---
 
