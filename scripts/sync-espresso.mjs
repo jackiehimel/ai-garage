@@ -38,13 +38,14 @@ const REPO_ROOT = path.resolve(
 const EDITIONS_DIR = path.join(REPO_ROOT, "editions");
 
 function parseArgs(argv) {
-  const out = { source: null, edition: null, variant: null };
+  const out = { source: null, edition: null, variant: null, sourceRepo: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const next = () => argv[++i];
     if (a === "--source") out.source = next();
     else if (a === "--edition") out.edition = next();
     else if (a === "--variant") out.variant = next();
+    else if (a === "--source-repo") out.sourceRepo = next();
     else throw new Error(`Unknown flag: ${a}`);
   }
   if (out.variant) {
@@ -54,6 +55,11 @@ function parseArgs(argv) {
         `Invalid --variant value: ${out.variant} (expected a short slug like 'c')`,
       );
     }
+  }
+  if (out.sourceRepo && !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(out.sourceRepo)) {
+    throw new Error(
+      `Invalid --source-repo value: ${out.sourceRepo} (expected owner/repo)`,
+    );
   }
   return out;
 }
@@ -315,6 +321,7 @@ async function main() {
   const opts = parseArgs(process.argv.slice(2));
   const sourceRoot = opts.source ?? defaultSource();
   const sourceEditions = path.join(sourceRoot, "editions");
+  const sourceRepo = opts.sourceRepo ?? "jackiehimel/AI-ESPRESSO";
 
   try {
     await fs.access(sourceEditions);
@@ -395,7 +402,7 @@ async function main() {
       markdown: "latest.md",
       frozen_html: frozenHtml,
       variant: pick.variant,
-      source_repo: "jackiehimel/AI-ESPRESSO",
+      source_repo: sourceRepo,
       source_path: path.relative(sourceRoot, pick.htmlPath),
     },
     archive,

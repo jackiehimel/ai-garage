@@ -44,7 +44,15 @@ jobs:
           fi
 
       - name: Run sync
-        run: node scripts/sync-espresso.mjs --source "${GITHUB_WORKSPACE}/AI-ESPRESSO" --variant c
+        env:
+          AI_ESPRESSO_REPOSITORY: ${{ vars.AI_ESPRESSO_REPOSITORY }}
+        run: |
+          set -euo pipefail
+          REPO="${AI_ESPRESSO_REPOSITORY:-jackiehimel/AI-ESPRESSO}"
+          node scripts/sync-espresso.mjs \
+            --source "${GITHUB_WORKSPACE}/AI-ESPRESSO" \
+            --variant c \
+            --source-repo "$REPO"
 
       - name: Commit and push if changed
         run: |
