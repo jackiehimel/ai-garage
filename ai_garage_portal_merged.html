@@ -961,6 +961,66 @@
 
   .espresso-actions a:hover { border-bottom-color: var(--accent); }
 
+  .espresso-response {
+    margin: 12px 0 24px 0;
+    padding: 16px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .espresso-response h2 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+  }
+
+  .espresso-response p {
+    margin: 0 0 12px 0;
+    color: var(--ink-faint);
+    font-size: 14px;
+  }
+
+  .espresso-response textarea {
+    width: 100%;
+    min-height: 92px;
+    padding: 10px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    font: inherit;
+    line-height: 1.45;
+    resize: vertical;
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .espresso-response-controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .espresso-response button {
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+
+  .espresso-response button:hover { background: #1f1f1f; }
+
+  .espresso-response-status {
+    margin: 0;
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
   @media (max-width: 900px) {
     .espresso-meta {
       grid-template-columns: 1fr;
@@ -1667,6 +1727,17 @@
           <a href="editions/latest.md" target="_blank" rel="noopener">View as Markdown</a>
           <a href="https://github.com/jackiehimel/AI-ESPRESSO" target="_blank" rel="noopener">Source on GitHub</a>
         </div>
+        <div class="espresso-response">
+          <h2>Question of the day</h2>
+          <p>Write your answer and submit it.</p>
+          <form id="espresso-answer-form">
+            <textarea id="espresso-answer-input" maxlength="500" placeholder="Your one-sentence answer..." required></textarea>
+            <div class="espresso-response-controls">
+              <button type="submit">Submit answer</button>
+              <p id="espresso-answer-status" class="espresso-response-status"></p>
+            </div>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -1974,15 +2045,46 @@
     }
   })();
 
-  // espresso iframe: set height from content doc when same-origin (e.g. safari file://)
-  // chromium file:// per-file origin: keep css height on iframe
+  // espresso iframe: set height from content doc when same-origin.
+  // For typical desktop portal widths, force the four-card desktop layout.
   (() => {
     const iframe = document.querySelector('.espresso-frame iframe');
     if (!iframe) return;
-    iframe.addEventListener('load', () => {
+
+    function applyDesktopLayoutOverride(doc) {
+      if (!doc) return;
+      const container = iframe.closest('.espresso-frame');
+      if (!container) return;
+      const shouldForceDesktop = container.clientWidth >= 1050;
+      const styleId = 'espresso-force-desktop-layout';
+      const existing = doc.getElementById(styleId);
+
+      if (!shouldForceDesktop) {
+        if (existing) existing.remove();
+        return;
+      }
+
+      if (!existing) {
+        const style = doc.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+          .edition-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+          .story-cards {
+            grid-column: 1 / span 3 !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+          }
+          .edition-grid .prompt-card { grid-column: 4 !important; }
+          .section-divider { display: none !important; }
+        `;
+        doc.head.appendChild(style);
+      }
+    }
+
+    function resizeIframeToContent() {
       try {
         const doc = iframe.contentDocument;
         if (!doc) return;
+        applyDesktopLayoutOverride(doc);
         const h = Math.max(
           doc.documentElement.scrollHeight,
           doc.body ? doc.body.scrollHeight : 0,
@@ -1991,6 +2093,34 @@
       } catch {
         // cross-origin: keep css height
       }
+    }
+
+    iframe.addEventListener('load', resizeIframeToContent);
+    window.addEventListener('resize', resizeIframeToContent);
+  })();
+
+  (() => {
+    const form = document.getElementById('espresso-answer-form');
+    const input = document.getElementById('espresso-answer-input');
+    const status = document.getElementById('espresso-answer-status');
+    if (!form || !input || !status) return;
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const answer = (input.value || '').trim();
+      if (!answer) {
+        status.textContent = 'Please write an answer first.';
+        return;
+      }
+
+      const today = new Date().toISOString().slice(0, 10);
+      const issueTitle = 'AI Espresso QOTD response';
+      const issueBody = `Date: ${today}\n\nAnswer:\n${answer}`;
+      const issueUrl = `https://github.com/jackiehimel/ai-garage/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
+
+      window.open(issueUrl, '_blank', 'noopener');
+      status.textContent = 'Opened submission page in a new tab. Click "Create issue" to send.';
+      form.reset();
     });
   })();
 </script>
