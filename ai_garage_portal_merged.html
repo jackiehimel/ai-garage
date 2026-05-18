@@ -2055,7 +2055,7 @@
       if (!doc) return;
       const container = iframe.closest('.espresso-frame');
       if (!container) return;
-      const shouldForceDesktop = container.clientWidth >= 1050;
+      const shouldForceDesktop = window.innerWidth >= 900;
       const styleId = 'espresso-force-desktop-layout';
       const existing = doc.getElementById(styleId);
 
