@@ -1,25 +1,35 @@
 {
   "latest": {
-    "number": 3,
-    "label": "NO. 003",
-    "date_iso": "2026-05-18",
-    "date_human": "Mon · May 18 · 2026",
+    "number": 4,
+    "label": "NO. 004",
+    "date_iso": "2026-05-19",
+    "date_human": "Tue · May 19 · 2026",
     "shots": 4,
-    "headline": "Cerebras stock jumps 89% on debut as AI chip maker goes public",
+    "headline": "Baidu&#x27;s AI revenue just overtook its search ads for the first time",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_3_variant_c.html",
+    "frozen_html": "edition_4_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-ESPRESSO",
-    "source_path": "editions/edition_3_variant_c.html"
+    "source_path": "editions/edition_4_variant_c.html"
   },
   "archive": [
     {
+      "number": 3,
+      "label": "NO. 003",
+      "date_iso": "2026-05-18",
+      "date_human": "Mon · May 18 · 2026",
+      "headline": "Cerebras stock jumps 89% on debut as AI chip maker goes public",
+      "html": "edition_3_variant_c.html",
+      "markdown": "edition_3_variant_c.md",
+      "variant": "c"
+    },
+    {
       "number": 2,
       "label": "NO. 002",
-      "date_iso": "2026-05-16",
-      "date_human": "Sat · May 16 · 2026",
-      "headline": "Anthropic is spinning out a new. OpenAI is giving every citizen. And AI is writing mortgage applications now,.",
+      "date_iso": "2026-05-18",
+      "date_human": "Mon · May 18 · 2026",
+      "headline": "Anthropic and Gates Foundation launch $200M partnership for global health AI",
       "html": "edition_2_variant_c.html",
       "markdown": "edition_2_variant_c.md",
       "variant": "c"
