@@ -67,4 +67,4 @@ Works in Claude Sonnet 4.6 or ChatGPT / GPT-5.5
 
 ---
 
-*brewed by ai espresso · [spot something off?](mailto:jacqueline.himel@vanderbilt.edu?subject=AI%20Espresso%20issue%20report) · [repo](https://github.com/jackiehimel/ai-espresso)*
+*brewed by ai espresso · [spot something off?](mailto:jacqueline.himel@vanderbilt.edu?subject=AI%20Espresso%20issue%20report) · [repo](https://github.com/jackiehimel/AI-ESPRESSO-MAIN)*

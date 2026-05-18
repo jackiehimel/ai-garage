@@ -1,19 +1,29 @@
 {
   "latest": {
-    "number": 2,
-    "label": "NO. 002",
-    "date_iso": "2026-05-16",
-    "date_human": "Sat · May 16 · 2026",
+    "number": 3,
+    "label": "NO. 003",
+    "date_iso": "2026-05-18",
+    "date_human": "Mon · May 18 · 2026",
     "shots": 4,
-    "headline": "Anthropic is spinning out a new. OpenAI is giving every citizen. And AI is writing mortgage applications now,.",
+    "headline": "Cerebras stock jumps 89% on debut as AI chip maker goes public",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_2_variant_c.html",
+    "frozen_html": "edition_3_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-ESPRESSO",
-    "source_path": "editions/edition_2_variant_c.html"
+    "source_path": "editions/edition_3_variant_c.html"
   },
   "archive": [
+    {
+      "number": 2,
+      "label": "NO. 002",
+      "date_iso": "2026-05-16",
+      "date_human": "Sat · May 16 · 2026",
+      "headline": "Anthropic is spinning out a new. OpenAI is giving every citizen. And AI is writing mortgage applications now,.",
+      "html": "edition_2_variant_c.html",
+      "markdown": "edition_2_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 1,
       "label": "NO. 001",

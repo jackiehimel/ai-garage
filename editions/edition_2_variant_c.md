@@ -69,4 +69,4 @@ Works in Claude, ChatGPT, or Gemini.
 
 ---
 
-*brewed by ai espresso · [spot something off?](mailto:jacqueline.himel@vanderbilt.edu?subject=AI%20Espresso%20issue%20report) · [repo](https://github.com/jackiehimel/ai-espresso)*
+*brewed by ai espresso · [spot something off?](mailto:jacqueline.himel@vanderbilt.edu?subject=AI%20Espresso%20issue%20report) · [repo](https://github.com/jackiehimel/AI-ESPRESSO-MAIN)*
