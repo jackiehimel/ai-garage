@@ -4,62 +4,48 @@
 
 ---
 
-![Baidu's AI revenue just overtook its search ads for the first time](edition_4/assets/variant_c_01.png)
+![Anthropic acquires Stainless, the API tooling company](edition_4/assets/variant_c_01.png)
 
 **MARKET**
 
-## Baidu's AI revenue just overtook its search ads for the first time
+## Anthropic acquires Stainless, the API tooling company
 
-China's search giant posted only a 1% revenue drop this quarter because AI product sales grew faster than its legacy ad business shrank. It's the first time Baidu has made more from AI tools than from the search advertising that built the company.
+Anthropic bought Stainless, a startup that auto-generates SDKs and API tooling for developers. Stainless already builds the official SDKs for Claude's API — now that team is coming in-house to make building with Claude easier across languages.
 
-*A major internet company just crossed the threshold where AI became its primary business.*
-
-[Bloomberg Technology](https://www.bloomberg.com/news/articles/2026-05-18/baidu-tops-sales-estimates-in-endorsement-of-agentic-ai-pivot) · May 19
-
----
-
-![Google's AI coding agent just designed algorithms faster than human experts](edition_4/assets/variant_c_02.png)
-
-**EVERYDAY**
-
-## Google's AI coding agent just designed algorithms faster than human experts
-
-AlphaEvolve uses Gemini to write and test algorithms automatically, then keeps improving them through trial and error. Google says it's already speeding up data center operations and helping scientists discover new materials—work that normally takes specialists weeks or months.
-
-*AI can now write optimized code for specific problems without human experts doing the heavy lifting.*
-
-[Google DeepMind Blog](https://deepmind.google/blog/alphaevolve-impact/) · May 19
-
----
-
-![Anthropic acquires Stainless, the company that builds SDK generators](edition_4/assets/variant_c_03.png)
-
-**INDUSTRY**
-
-## Anthropic acquires Stainless, the company that builds SDK generators
-
-Anthropic bought Stainless, a dev tools startup that auto-generates SDKs from API specs. Stainless already builds the official SDKs for Claude, OpenAI, and a dozen other APIs. The team joins Anthropic to keep working on developer tooling.
-
-*The SDK layer just became part of Claude's core infrastructure instead of a vendor relationship.*
+*Better developer tools mean faster Claude adoption, especially for teams shipping production AI features.*
 
 [Anthropic News](https://www.anthropic.com/news/anthropic-acquires-stainless) · May 19
 
 ---
 
+![Meta's new SAM 3.1 can track objects in video twice as fast](edition_4/assets/variant_c_02.png)
+
+**EVERYDAY**
+
+## Meta's new SAM 3.1 can track objects in video twice as fast
+
+Meta upgraded its Segment Anything Model to track objects in real-time video at double the speed. The new version can follow multiple things at once across a video — like tracking every person in a crowd scene or every car on a street — without slowing down. It runs faster on cheaper hardware, making video analysis more practical for everyday apps.
+
+*Real-time video understanding just got fast enough to run in normal applications, not just research labs.*
+
+[Meta AI Blog](https://ai.meta.com/blog/segment-anything-model-3/) · May 19
 
 ---
 
-![Try this prompt](edition_4/assets/variant_c_04.png)
+
+---
+
+![Try this prompt](edition_4/assets/variant_c_03.png)
 
 **☕ Try this prompt**
 
-### The zombie metric
+### The honest rewrite
 
-*Before the next dashboard review or quarterly planning deck.*
+*Before you send the email you've been wordsmithing for 40 minutes.*
 
 
 ```
-I'm tracking a metric that everyone reports but nobody acts on. Describe it in two sentences below. Then tell me: what behavior would actually change if this number moved 30% in either direction? If the answer is nothing, give me one metric that would make someone pick up the phone.
+I just wrote something that's technically accurate but sounds like a compliance document. Paste it below, then rewrite it so a smart 12-year-old would understand—but keep every fact intact. If you cut jargon, show me what it actually meant.
 ```
 
 ---
