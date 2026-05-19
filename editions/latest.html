@@ -326,7 +326,12 @@
   <section class="qotd" id="qotd">
     <p class="qotd-label">Question of the day</p>
     <p class="qotd-question">If AI companies are buying the tools that build their tools, what&#x27;s the last thing you&#x27;d want automated away?</p>
-    <p class="qotd-preview">Preview edition — answers are collected when this issue is hosted online.</p>
+    <form class="qotd-form" id="qotd-form">
+      <input class="qotd-input" type="text" placeholder="Your one-sentence answer…" maxlength="280" required>
+      <button class="qotd-submit" type="submit">Reply</button>
+    </form>
+    <p class="qotd-done" id="qotd-done">Thanks! Your answer was submitted.</p>
+    <p class="qotd-error" id="qotd-error">Something went wrong — try again.</p>
   </section>
 
   <footer class="footer">
@@ -373,6 +378,29 @@
     }
   }
   btn.addEventListener("click", copyPrompt);
+})();
+
+(function () {
+  var form = document.getElementById("qotd-form");
+  if (!form) return;
+  var input = form.querySelector(".qotd-input");
+  var done = document.getElementById("qotd-done");
+  var err = document.getElementById("qotd-error");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var answer = (input.value || "").trim();
+    if (!answer) return;
+    var today = new Date().toISOString().slice(0, 10);
+    var title = "AI Espresso QOTD response";
+    var body = "Date: " + today + "\n\nAnswer:\n" + answer;
+    var url = "https://github.com/jackiehimel/ai-garage/issues/new?title=" +
+      encodeURIComponent(title) + "&body=" + encodeURIComponent(body);
+    window.open(url, "_blank", "noopener");
+    done.style.display = "block";
+    err.style.display = "none";
+    form.reset();
+  });
 })();
 </script>
 </body>
