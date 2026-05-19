@@ -2049,46 +2049,15 @@
     }
   })();
 
-  // espresso iframe: set height from content doc when same-origin.
-  // For typical desktop portal widths, force the four-card desktop layout.
+  // espresso iframe: auto-size height from content doc when same-origin
   (() => {
     const iframe = document.querySelector('.espresso-frame iframe');
     if (!iframe) return;
-
-    function applyDesktopLayoutOverride(doc) {
-      if (!doc) return;
-      const container = iframe.closest('.espresso-frame');
-      if (!container) return;
-      const shouldForceDesktop = window.innerWidth >= 900;
-      const styleId = 'espresso-force-desktop-layout';
-      const existing = doc.getElementById(styleId);
-
-      if (!shouldForceDesktop) {
-        if (existing) existing.remove();
-        return;
-      }
-
-      if (!existing) {
-        const style = doc.createElement('style');
-        style.id = styleId;
-        style.textContent = `
-          .edition-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
-          .story-cards {
-            grid-column: 1 / span 3 !important;
-            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-          }
-          .edition-grid .prompt-card { grid-column: 4 !important; }
-          .section-divider { display: none !important; }
-        `;
-        doc.head.appendChild(style);
-      }
-    }
 
     function resizeIframeToContent() {
       try {
         const doc = iframe.contentDocument;
         if (!doc) return;
-        applyDesktopLayoutOverride(doc);
         const h = Math.max(
           doc.documentElement.scrollHeight,
           doc.body ? doc.body.scrollHeight : 0,
