@@ -7,7 +7,7 @@
   "scripts": {
     "snap": "node scripts/snap.mjs",
     "snap:merged": "node scripts/snap.mjs --file ai_garage_portal_merged.html --full",
-    "sync:espresso": "node scripts/sync-espresso.mjs --variant c",
+    "sync:espresso": "node scripts/sync-espresso-from-manifest.mjs --manifest-url https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
     "install:browsers": "PLAYWRIGHT_BROWSERS_PATH=\"$HOME/.cache/ms-playwright\" playwright install chromium"
   },
   "devDependencies": {

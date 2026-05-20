@@ -1,6 +1,6 @@
 # ai-garage
 
-Static internal portal for Solvd’s AI Garage: one HTML entry point, vendored AI Espresso editions, and a Node script to pull new editions from your local [AI-ESPRESSO](https://github.com/jackiehimel/AI-ESPRESSO) checkout.
+Static internal portal for Solvd’s AI Garage: one HTML entry point, vendored AI Espresso editions, and a Node script to pull new editions from AI Espresso's published artifact manifest.
 
 ## What’s in the tree
 
@@ -8,8 +8,8 @@ Static internal portal for Solvd’s AI Garage: one HTML entry point, vendored A
 |------|------|
 | `ai_garage_portal_merged.html` | The site. Hash-based sections, embedded CSS/JS, iframe for `editions/latest.html`. |
 | `editions/` | Vendored digest (`latest.html`, `latest.md`, assets, `manifest.json`). |
-| `scripts/sync-espresso.mjs` | Copies the newest variant C edition from a local AI-ESPRESSO repo into `editions/`. |
-| `.github/workflows/sync-espresso.yml` | Daily GitHub Action: clone digest repo, run sync, push if `editions/` changed. |
+| `scripts/sync-espresso-from-manifest.mjs` | Downloads latest HTML/MD/assets from AI Espresso publish manifest into `editions/`. |
+| `.github/workflows/sync-espresso.yml` | Daily GitHub Action: fetch manifest, sync artifacts, push if `editions/` changed. |
 | `vercel.json` | Maps `/` to the merged HTML so the default URL loads the portal. |
 
 More detail on how editions land in this repo lives in [`editions/README.md`](editions/README.md).
@@ -37,19 +37,18 @@ npm install
 npm run sync:espresso
 ```
 
-`sync:espresso` defaults to variant C and assumes the digest source repo is checked out at:
+`sync:espresso` reads AI Espresso's published manifest:
 
-`~/Documents/Solvd/AI-ESPRESSO` (or your `ai-espresso-with-renderer` clone)
+`https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json`
 
-Override with `--source /absolute/path/to/AI-ESPRESSO`. Optional flags: `--edition`. The script picks the highest numbered `edition_*_variant_c.{html,md}` pair under `editions/` unless you pin one.
+Override with `--manifest-url <url>` if needed.
 
 ## Automatic sync on GitHub
 
-[`.github/workflows/sync-espresso.yml`](.github/workflows/sync-espresso.yml) runs daily at **~8:00 AM Eastern** and on demand (**Actions** → **Sync AI Espresso editions** → **Run workflow**). It clones AI-ESPRESSO, runs the same sync script as locally (`--variant c`), and pushes a commit to `main` when `editions/` changes. The edition publish job on AI-ESPRESSO runs at **~7:00 AM Eastern**.
+[`.github/workflows/sync-espresso.yml`](.github/workflows/sync-espresso.yml) runs daily at **~8:00 AM Eastern** and on demand (**Actions** → **Sync AI Espresso editions** → **Run workflow**). It fetches AI Espresso's publish manifest, downloads the declared artifacts, and pushes a commit to `main` when `editions/` changes. The AI Espresso publish job runs at **~7:00 AM Eastern**.
 
 1. **Repo settings:** **Actions** → **General** → *Workflow permissions* → allow **Read and write** so the workflow can push commits.
-2. **Which repo to clone:** set a repository variable `AI_ESPRESSO_REPOSITORY` (e.g. `jackiehimel/AI-ESPRESSO`). If unset, the workflow defaults to `jackiehimel/AI-ESPRESSO`.
-3. **Private digest repo only:** if you make `AI-ESPRESSO` private again, add secret `AI_ESPRESSO_CLONE_TOKEN` (fine-grained PAT with read access). On GitHub: repo **Settings** → **Secrets and variables** → **Actions** → **New repository secret**. Or in Terminal: `gh secret set AI_ESPRESSO_CLONE_TOKEN -R jackiehimel/ai-garage`. Public repos do not need this.
+2. **Manifest source override (optional):** set repository variable `AI_ESPRESSO_MANIFEST_URL` if you need a non-default contract URL.
 
 ## Optional screenshot helper
 

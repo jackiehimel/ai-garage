@@ -1,7 +1,7 @@
-# Clones AI-ESPRESSO, runs scripts/sync-espresso.mjs --variant c, commits editions/ if changed.
+# Pulls latest AI Espresso manifest/artifacts (no source repo clone).
 # Schedule: daily ~8:00 AM Eastern (about one hour after the edition publish ~7:00 AM ET).
 # GitHub cron is UTC-only: 12:00 UTC ≈ 8:00 AM EDT / 7:00 AM EST.
-# Private source: set repo variable AI_ESPRESSO_REPOSITORY and secret AI_ESPRESSO_CLONE_TOKEN.
+# Override source manifest with repo variable AI_ESPRESSO_MANIFEST_URL.
 
 name: Sync AI Espresso editions
 
@@ -29,30 +29,14 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Clone AI-ESPRESSO
-        env:
-          AI_ESPRESSO_REPOSITORY: ${{ vars.AI_ESPRESSO_REPOSITORY }}
-          AI_ESPRESSO_CLONE_TOKEN: ${{ secrets.AI_ESPRESSO_CLONE_TOKEN }}
-        run: |
-          set -euo pipefail
-          REPO="${AI_ESPRESSO_REPOSITORY:-jackiehimel/AI-ESPRESSO}"
-          DEST="${GITHUB_WORKSPACE}/AI-ESPRESSO"
-          if [ -n "${AI_ESPRESSO_CLONE_TOKEN:-}" ]; then
-            git clone --depth 1 "https://x-access-token:${AI_ESPRESSO_CLONE_TOKEN}@github.com/${REPO}.git" "$DEST"
-          else
-            git clone --depth 1 "https://github.com/${REPO}.git" "$DEST"
-          fi
-
       - name: Run sync
         env:
-          AI_ESPRESSO_REPOSITORY: ${{ vars.AI_ESPRESSO_REPOSITORY }}
+          AI_ESPRESSO_MANIFEST_URL: ${{ vars.AI_ESPRESSO_MANIFEST_URL }}
         run: |
           set -euo pipefail
-          REPO="${AI_ESPRESSO_REPOSITORY:-jackiehimel/AI-ESPRESSO}"
-          node scripts/sync-espresso.mjs \
-            --source "${GITHUB_WORKSPACE}/AI-ESPRESSO" \
-            --variant c \
-            --source-repo "$REPO"
+          MANIFEST_URL="${AI_ESPRESSO_MANIFEST_URL:-https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json}"
+          node scripts/sync-espresso-from-manifest.mjs \
+            --manifest-url "$MANIFEST_URL"
 
       - name: Commit and push if changed
         run: |

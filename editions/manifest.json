@@ -1,19 +1,31 @@
 {
   "latest": {
-    "number": 4,
-    "label": "NO. 004",
+    "number": 5,
+    "label": "NO. 005",
     "date_iso": "2026-05-19",
     "date_human": "Tue · May 19 · 2026",
     "shots": 4,
-    "headline": "Anthropic acquires Stainless, the API tooling company · Meta&#x27;s new SAM 3.1 can track objects in video twice as fast",
+    "headline": "Cursor just acquired Supermaven, the autocomplete startup that beat Copilot",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_4_variant_c.html",
+    "frozen_html": "edition_5_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/ai-espresso-finalized",
-    "source_path": "editions/edition_4_variant_c.html"
+    "source_ref": "main",
+    "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
+    "source_path": "editions/edition_5_variant_c.html"
   },
   "archive": [
+    {
+      "number": 4,
+      "label": "NO. 004",
+      "date_iso": "2026-05-19",
+      "date_human": "Tue · May 19 · 2026",
+      "headline": "Anthropic acquires Stainless, the API tooling company · Meta&#x27;s new SAM 3.1 can track objects in video twice as fast",
+      "html": "edition_4_variant_c.html",
+      "markdown": "edition_4_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 3,
       "label": "NO. 003",
