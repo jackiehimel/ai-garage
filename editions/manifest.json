@@ -2,10 +2,10 @@
   "latest": {
     "number": 6,
     "label": "NO. 006",
-    "date_iso": "2026-05-19",
-    "date_human": "Tue · May 19 · 2026",
+    "date_iso": "2026-05-20",
+    "date_human": "Wed · May 20 · 2026",
     "shots": 5,
-    "headline": "Polymarket lets you bet on when OpenAI or Anthropic will IPO",
+    "headline": "OpenAI will now let companies reserve compute so their AI apps don&#x27;t slow down",
     "html": "latest.html",
     "markdown": "latest.md",
     "frozen_html": "edition_6_variant_c.html",
