@@ -1,0 +1,36 @@
+{
+  "stack": [
+    "JavaScript",
+    "Node.js",
+    "HTML",
+    "CSS",
+    "Playwright"
+  ],
+
+  "blockOn": [
+    "exposed_secrets",
+    "hardcoded_credentials",
+    "missing_input_validation",
+    "sql_injection_risk"
+  ],
+
+  "warnThresholds": {
+    "latency_ms": 50,
+    "bundle_kb": 50,
+    "new_deps": 3,
+    "min_coverage_pct": 0
+  },
+
+  "ignorePaths": [
+    "**/*.test.js",
+    "**/*.spec.js",
+    "**/fixtures/**",
+    "docs/**",
+    "*.md",
+    ".github/**"
+  ],
+
+  "blockMergeOnCritical": true,
+
+  "commentUpdateStrategy": "update_existing"
+}
