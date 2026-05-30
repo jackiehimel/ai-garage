@@ -23,27 +23,55 @@ function parseArgs(argv) {
   return out;
 }
 
-async function fetchJson(urlValue) {
-  const res = await fetch(urlValue, { redirect: "follow" });
-  if (!res.ok) {
-    throw new Error(`manifest fetch failed (${res.status}): ${urlValue}`);
+const FETCH_TIMEOUT_MS = 20000;
+const FETCH_RETRIES = 3;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Wrap fetch with a per-attempt timeout and exponential backoff. This script
+// runs as a daily GitHub Action against raw.githubusercontent.com, where a
+// single transient blip or a hung connection would otherwise fail the sync.
+async function fetchWithRetry(urlValue, label) {
+  let lastErr;
+  for (let attempt = 1; attempt <= FETCH_RETRIES; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try {
+      const res = await fetch(urlValue, { redirect: "follow", signal: controller.signal });
+      if (!res.ok) {
+        // 4xx responses won't fix themselves on retry; fail fast.
+        if (res.status >= 400 && res.status < 500) {
+          throw new Error(`${label} fetch failed (${res.status}): ${urlValue}`);
+        }
+        throw new Error(`${label} fetch failed (${res.status}): ${urlValue} [retryable]`);
+      }
+      return res;
+    } catch (err) {
+      lastErr = err;
+      const retryable = !(err instanceof Error && /\(4\d\d\)/.test(err.message));
+      if (!retryable || attempt === FETCH_RETRIES) break;
+      const backoff = 500 * 2 ** (attempt - 1);
+      console.error(`${label} fetch attempt ${attempt} failed: ${err.message}. Retrying in ${backoff}ms...`);
+      await sleep(backoff);
+    } finally {
+      clearTimeout(timer);
+    }
   }
+  throw lastErr;
+}
+
+async function fetchJson(urlValue) {
+  const res = await fetchWithRetry(urlValue, "manifest");
   return res.json();
 }
 
 async function fetchText(urlValue) {
-  const res = await fetch(urlValue, { redirect: "follow" });
-  if (!res.ok) {
-    throw new Error(`text fetch failed (${res.status}): ${urlValue}`);
-  }
+  const res = await fetchWithRetry(urlValue, "text");
   return res.text();
 }
 
 async function fetchBytes(urlValue) {
-  const res = await fetch(urlValue, { redirect: "follow" });
-  if (!res.ok) {
-    throw new Error(`asset fetch failed (${res.status}): ${urlValue}`);
-  }
+  const res = await fetchWithRetry(urlValue, "asset");
   return Buffer.from(await res.arrayBuffer());
 }
 
