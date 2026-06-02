@@ -1,21 +1,31 @@
 {
   "latest": {
-    "number": 7,
-    "label": "NO. 007",
-    "date_iso": "2026-05-28",
-    "date_human": "Thu · May 28 · 2026",
+    "number": 8,
+    "label": "NO. 008",
+    "date_iso": "2026-06-02",
+    "date_human": "Tue · Jun 2 · 2026",
     "shots": 5,
-    "headline": "Mystery model Hy3 is crushing GPT-4o on OpenRouter&#x27;s leaderboard",
+    "headline": "Anthropic just filed to go public",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_7_variant_c.html",
+    "frozen_html": "edition_8_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-espresso-agent",
     "source_ref": "main",
     "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
-    "source_path": "editions/edition_7_variant_c.html"
+    "source_path": "editions/edition_8_variant_c.html"
   },
   "archive": [
+    {
+      "number": 7,
+      "label": "NO. 007",
+      "date_iso": "2026-05-28",
+      "date_human": "Thu · May 28 · 2026",
+      "headline": "Mystery model Hy3 is crushing GPT-4o on OpenRouter&#x27;s leaderboard",
+      "html": "edition_7_variant_c.html",
+      "markdown": "edition_7_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 6,
       "label": "NO. 006",
