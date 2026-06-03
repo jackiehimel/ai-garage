@@ -1,21 +1,31 @@
 {
   "latest": {
-    "number": 8,
-    "label": "NO. 008",
-    "date_iso": "2026-06-02",
-    "date_human": "Tue · Jun 2 · 2026",
+    "number": 9,
+    "label": "NO. 009",
+    "date_iso": "2026-06-03",
+    "date_human": "Wed · Jun 3 · 2026",
     "shots": 5,
-    "headline": "Anthropic just filed to go public",
+    "headline": "Sam Altman invited to G7 summit by France&#x27;s Macron",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_8_variant_c.html",
+    "frozen_html": "edition_9_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-espresso-agent",
     "source_ref": "main",
     "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
-    "source_path": "editions/edition_8_variant_c.html"
+    "source_path": "editions/edition_9_variant_c.html"
   },
   "archive": [
+    {
+      "number": 8,
+      "label": "NO. 008",
+      "date_iso": "2026-06-02",
+      "date_human": "Tue · Jun 2 · 2026",
+      "headline": "Anthropic just filed to go public",
+      "html": "edition_8_variant_c.html",
+      "markdown": "edition_8_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 7,
       "label": "NO. 007",
