@@ -1,21 +1,31 @@
 {
   "latest": {
-    "number": 9,
-    "label": "NO. 009",
-    "date_iso": "2026-06-03",
-    "date_human": "Wed · Jun 3 · 2026",
-    "shots": 5,
-    "headline": "Sam Altman invited to G7 summit by France&#x27;s Macron",
+    "number": 12,
+    "label": "NO. 012",
+    "date_iso": "2026-06-08",
+    "date_human": "Mon · Jun 8 · 2026",
+    "shots": 4,
+    "headline": "ChatGPT now has a Lockdown Mode that blocks prompt injection leaks",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_9_variant_c.html",
+    "frozen_html": "edition_12_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-espresso-agent",
     "source_ref": "main",
     "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
-    "source_path": "editions/edition_9_variant_c.html"
+    "source_path": "editions/edition_12_variant_c.html"
   },
   "archive": [
+    {
+      "number": 9,
+      "label": "NO. 009",
+      "date_iso": "2026-06-03",
+      "date_human": "Wed · Jun 3 · 2026",
+      "headline": "Sam Altman invited to G7 summit by France&#x27;s Macron",
+      "html": "edition_9_variant_c.html",
+      "markdown": "edition_9_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 8,
       "label": "NO. 008",
