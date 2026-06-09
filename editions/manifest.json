@@ -1,21 +1,31 @@
 {
   "latest": {
-    "number": 12,
-    "label": "NO. 012",
-    "date_iso": "2026-06-08",
-    "date_human": "Mon · Jun 8 · 2026",
-    "shots": 4,
-    "headline": "ChatGPT now has a Lockdown Mode that blocks prompt injection leaks",
+    "number": 14,
+    "label": "NO. 014",
+    "date_iso": "2026-06-09",
+    "date_human": "Tue · Jun 9 · 2026",
+    "shots": 6,
+    "headline": "Apple just announced the next version of Apple Intelligence and Siri",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_12_variant_c.html",
+    "frozen_html": "edition_14_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-espresso-agent",
     "source_ref": "main",
     "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
-    "source_path": "editions/edition_12_variant_c.html"
+    "source_path": "editions/edition_14_variant_c.html"
   },
   "archive": [
+    {
+      "number": 12,
+      "label": "NO. 012",
+      "date_iso": "2026-06-08",
+      "date_human": "Mon · Jun 8 · 2026",
+      "headline": "ChatGPT now has a Lockdown Mode that blocks prompt injection leaks",
+      "html": "edition_12_variant_c.html",
+      "markdown": "edition_12_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 9,
       "label": "NO. 009",
