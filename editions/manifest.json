@@ -1,21 +1,31 @@
 {
   "latest": {
-    "number": 14,
-    "label": "NO. 014",
-    "date_iso": "2026-06-09",
-    "date_human": "Tue · Jun 9 · 2026",
+    "number": 15,
+    "label": "NO. 015",
+    "date_iso": "2026-06-10",
+    "date_human": "Wed · Jun 10 · 2026",
     "shots": 6,
-    "headline": "Apple just announced the next version of Apple Intelligence and Siri",
+    "headline": "Anthropic just shipped two new Claude models with different strengths",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_14_variant_c.html",
+    "frozen_html": "edition_15_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-espresso-agent",
     "source_ref": "main",
     "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
-    "source_path": "editions/edition_14_variant_c.html"
+    "source_path": "editions/edition_15_variant_c.html"
   },
   "archive": [
+    {
+      "number": 14,
+      "label": "NO. 014",
+      "date_iso": "2026-06-09",
+      "date_human": "Tue · Jun 9 · 2026",
+      "headline": "Apple just announced the next version of Apple Intelligence and Siri",
+      "html": "edition_14_variant_c.html",
+      "markdown": "edition_14_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 12,
       "label": "NO. 012",
