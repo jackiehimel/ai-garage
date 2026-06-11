@@ -1,21 +1,31 @@
 {
   "latest": {
-    "number": 15,
-    "label": "NO. 015",
-    "date_iso": "2026-06-10",
-    "date_human": "Wed · Jun 10 · 2026",
+    "number": 16,
+    "label": "NO. 016",
+    "date_iso": "2026-06-11",
+    "date_human": "Thu · Jun 11 · 2026",
     "shots": 6,
-    "headline": "Anthropic just shipped two new Claude models with different strengths",
+    "headline": "Anthropic&#x27;s Claude Fable 5 lands on AWS with Mythos-level performance",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_15_variant_c.html",
+    "frozen_html": "edition_16_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-espresso-agent",
     "source_ref": "main",
     "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
-    "source_path": "editions/edition_15_variant_c.html"
+    "source_path": "editions/edition_16_variant_c.html"
   },
   "archive": [
+    {
+      "number": 15,
+      "label": "NO. 015",
+      "date_iso": "2026-06-10",
+      "date_human": "Wed · Jun 10 · 2026",
+      "headline": "Anthropic just shipped two new Claude models with different strengths",
+      "html": "edition_15_variant_c.html",
+      "markdown": "edition_15_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 14,
       "label": "NO. 014",
