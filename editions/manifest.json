@@ -1,21 +1,31 @@
 {
   "latest": {
-    "number": 16,
-    "label": "NO. 016",
-    "date_iso": "2026-06-11",
-    "date_human": "Thu · Jun 11 · 2026",
+    "number": 17,
+    "label": "NO. 017",
+    "date_iso": "2026-06-12",
+    "date_human": "Fri · Jun 12 · 2026",
     "shots": 6,
-    "headline": "Anthropic&#x27;s Claude Fable 5 lands on AWS with Mythos-level performance",
+    "headline": "Jeff Bezos&#x27;s Prometheus raises $12B to build an AI that designs buildings and drugs",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_16_variant_c.html",
+    "frozen_html": "edition_17_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-espresso-agent",
     "source_ref": "main",
     "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
-    "source_path": "editions/edition_16_variant_c.html"
+    "source_path": "editions/edition_17_variant_c.html"
   },
   "archive": [
+    {
+      "number": 16,
+      "label": "NO. 016",
+      "date_iso": "2026-06-11",
+      "date_human": "Thu · Jun 11 · 2026",
+      "headline": "Anthropic&#x27;s Claude Fable 5 lands on AWS with Mythos-level performance",
+      "html": "edition_16_variant_c.html",
+      "markdown": "edition_16_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 15,
       "label": "NO. 015",
