@@ -1,21 +1,31 @@
 {
   "latest": {
-    "number": 17,
-    "label": "NO. 017",
-    "date_iso": "2026-06-12",
-    "date_human": "Fri · Jun 12 · 2026",
-    "shots": 6,
-    "headline": "Jeff Bezos&#x27;s Prometheus raises $12B to build an AI that designs buildings and drugs",
+    "number": 18,
+    "label": "NO. 018",
+    "date_iso": "2026-06-13",
+    "date_human": "Sat · Jun 13 · 2026",
+    "shots": 5,
+    "headline": "US government orders Anthropic to suspend two of its AI models",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_17_variant_c.html",
+    "frozen_html": "edition_18_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-espresso-agent",
     "source_ref": "main",
     "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
-    "source_path": "editions/edition_17_variant_c.html"
+    "source_path": "editions/edition_18_variant_c.html"
   },
   "archive": [
+    {
+      "number": 17,
+      "label": "NO. 017",
+      "date_iso": "2026-06-12",
+      "date_human": "Fri · Jun 12 · 2026",
+      "headline": "Jeff Bezos&#x27;s Prometheus raises $12B to build an AI that designs buildings and drugs",
+      "html": "edition_17_variant_c.html",
+      "markdown": "edition_17_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 16,
       "label": "NO. 016",
