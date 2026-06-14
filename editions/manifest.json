@@ -1,21 +1,31 @@
 {
   "latest": {
-    "number": 18,
-    "label": "NO. 018",
-    "date_iso": "2026-06-13",
-    "date_human": "Sat · Jun 13 · 2026",
-    "shots": 5,
-    "headline": "US government orders Anthropic to suspend two of its AI models",
+    "number": 19,
+    "label": "NO. 019",
+    "date_iso": "2026-06-14",
+    "date_human": "Sun · Jun 14 · 2026",
+    "shots": 4,
+    "headline": "Court rules Google is liable when AI Overviews make false claims",
     "html": "latest.html",
     "markdown": "latest.md",
-    "frozen_html": "edition_18_variant_c.html",
+    "frozen_html": "edition_19_variant_c.html",
     "variant": "c",
     "source_repo": "jackiehimel/AI-espresso-agent",
     "source_ref": "main",
     "source_manifest_url": "https://raw.githubusercontent.com/jackiehimel/ai-espresso-finalized/main/editions/publish/latest.json",
-    "source_path": "editions/edition_18_variant_c.html"
+    "source_path": "editions/edition_19_variant_c.html"
   },
   "archive": [
+    {
+      "number": 18,
+      "label": "NO. 018",
+      "date_iso": "2026-06-13",
+      "date_human": "Sat · Jun 13 · 2026",
+      "headline": "US government orders Anthropic to suspend two of its AI models",
+      "html": "edition_18_variant_c.html",
+      "markdown": "edition_18_variant_c.md",
+      "variant": "c"
+    },
     {
       "number": 17,
       "label": "NO. 017",
